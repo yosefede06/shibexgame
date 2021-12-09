@@ -24,10 +24,6 @@ class Car{
 
         this.image = {
             imageInstance: undefined, //just one img
-//            rows: 2,
-//            rowIndex: 0,
-//            frames: 4,
-//            frameIndex: 0,
         }
 
         this.spriteChangeTime = .1
