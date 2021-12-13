@@ -12,6 +12,7 @@ const mainBg = 'main';
 const initialBg = 'initial';
 const gameOverBg = 'gameOver';
 const closeState = 'close';
+const menu = 'menu'
 
 
 class Background {
@@ -91,6 +92,10 @@ class Background {
                 this.imageInstance.src = this.imagePathTrasitionDown
                 break;
 
+            case menu:
+                this.imageInstance.src = 'images/desierto.jpg' // TODO CHANGE HERE WITH THE MENU BACKGROUND
+                break;
+
             default:
                 break;
         }
@@ -101,7 +106,7 @@ class Background {
      * @param playerSpeed the player's speed
      */
     move(playerSpeed) {
-        // Movement for regular background wich allows the background to move
+        // Movement for regular background which allows the background to move
         if (this.backgroundType !== presentation_up && this.backgroundType !== presentation_down) {
             const compesatedSpeed = ((60 / this.FPS) * playerSpeed)
             this.position.x -= compesatedSpeed

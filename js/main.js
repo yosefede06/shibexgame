@@ -53,6 +53,8 @@ const Game = {
         UP: 38
     },
 
+    arenaButtons :[],
+
     // Creation timeouts
     timeOuts: {
         rockets: undefined,
@@ -120,6 +122,7 @@ const Game = {
         right: undefined,
         initial: undefined,
         gameOver: undefined,
+        menu: undefined,
     },
 
     // Game points system
@@ -149,6 +152,9 @@ const Game = {
         this.setCanvasDimensions()
         this.ctx = this.canvas.obejectInDOM.getContext('2d')
 
+        // init Menu Buttons
+        this.initButtons()
+
         // We create the player
         this.player = new JoyRoide(this.canvas, this.ctx, this, this.time.FPS, this.canvas.highLine, this.gravityForce)
 
@@ -162,6 +168,7 @@ const Game = {
 
         this.background.up = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'iron-up', this)
         this.background.down = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'iron-down', this)
+        this.background.menu  = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'menu', this)
 
         // Set random creation times
         this.walkersRandomTime.minTime = this.walkersRandomTime.minInicial  // Walkers
@@ -210,18 +217,40 @@ const Game = {
 
     //----- GAME START METHODS -----
 
+
+
+    startMenu()
+    {
+        // start menu where we choose the arena
+        console.log('StartMenu')
+        this.canvas.obejectInDOM.addEventListener('click', checkArena)
+        this.drawMenuBackground();
+    },
+
+
+    initButtons()
+    {
+        // here we can add a button for each arena
+        var button1 = new Button(150, 300, 200, 200, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg')
+        var button2 = new Button(400, 300, 200, 200, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png')
+        var button3 = new Button(650, 300, 200, 200, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg')
+        var button4 = new Button(900, 300, 200, 200, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg')
+        this.arenaButtons.push(button1)
+        this.arenaButtons.push(button2)
+        this.arenaButtons.push(button3)
+        this.arenaButtons.push(button4)
+    },
     start() {
-        this.isPlaying = true
         this.loadingScreen()
+        this.isPlaying = true
         this.reset()
         this.initiateAudio()
         this.createFrame()
 
         setTimeout(() => {
-
-            this.createCoins()
             this.createWarning()
             this.createObstacle()
+            this.createCoins()
             this.createWalker()
             this.createCar()
         }, 1500)
@@ -236,10 +265,15 @@ const Game = {
      */
     createFrame() {
         this.gameEngineInterval = setInterval(() => {
+            if (this.isGameOver){
+                // we are stopping the loop if game over
+                clearInterval(this.gameEngineInterval)
+            }
             // Player shooting
             if (this.player.isShooting && this.player.fireTime % this.player.fireFrequency === 0) {
                 this.player.shoot()
             }
+
 
             // We calculate the new position of all the elements
             if (!this.isGameOver) {
@@ -312,7 +346,7 @@ const Game = {
 
             case 2:
 
-                offSet = -7     // Coin row shape is a ascending slope
+                offSet = -7     // Coin row shape is an ascending slope
                 minPosY = 130
                 maxPosY = this.canvas.size.height - 95
                 randomPosY = Math.floor(Math.random() * (maxPosY - minPosY)) + minPosY
@@ -324,6 +358,40 @@ const Game = {
 
         const randomValue =
             Math.random() * (this.coinsRandomTime.maxTime - this.coinsRandomTime.minTime) + this.coinsRandomTime.minTime
+
+        // // checking that the coins are not touching the obstacle
+        // let minPosYRow = randomPosY;
+        // let maxPosyRow = (this.coinsRowAmount) * offSet + randomPosY
+        // let minPosXRow = this.canvas.size.width + 25
+        // let maxPosXRow = this.canvas.size.width + 25 * (this.coinsRowAmount)
+        // this.obstacles.forEach(elem => {
+        //     const obstacleX = elem.position.x
+        //     const obstacleY = elem.position.y
+        //     const obstacleWidth = elem.size.width
+        //     const obstacleHeight = elem.size.height
+        //     while (elem.isTouching(minPosXRow, minPosYRow, maxPosXRow, maxPosyRow))
+        //     {
+        //             // if here the coins is touching the obstacle we want to change the Y position
+        //             console.log("TOUCHINGGG")
+        //             // console.log('obs:', obstacleX)
+        //             // console.log('obstacleY:', obstacleY)
+        //
+        //
+        //             // coins will be above the obstacle
+        //             let minPosY2 = obstacleY + obstacleHeight
+        //             let randomPosYA = Math.floor(Math.random() * (maxPosY - minPosY2)) + minPosY2
+        //
+        //             // coins will be below
+        //             let randomPosYB = Math.floor(Math.random() * (obstacleY - minPosY)) + minPosY
+        //
+        //             randomPosY = Math.random() < 0.5 ? randomPosYA : randomPosYB;
+        //             minPosYRow = randomPosY;
+        //             maxPosyRow = (this.coinsRowAmount) * offSet + randomPosY
+        //             minPosXRow = this.canvas.size.width + 25
+        //             maxPosXRow = this.canvas.size.width + 25 * (this.coinsRowAmount)
+        //         }
+        // })
+
         this.timeOuts.coins = setTimeout(() => {
             for (let i = 0; i < this.coinsRowAmount; i++) {
                 const newCoin = new Coin(this.canvas, this.ctx, this.time.FPS,
@@ -331,6 +399,7 @@ const Game = {
                     (i * offSet) + randomPosY, i)
                 this.coins.push(newCoin)
             }
+
             this.createCoins()
         }, randomValue * 1000)
 
@@ -344,7 +413,7 @@ const Game = {
     createWarning() {
 
         const randomValue = Math.random() * (this.rocketsRandomTime.maxTime - this.rocketsRandomTime.minTime) + this.rocketsRandomTime.minTime
-        console.log(randomValue)
+        // console.log(randomValue)
 
         this.timeOuts.rockets = setTimeout(() => {
             this.rocketWarnings.push(new Warning(this.canvas, this.ctx, this.player.position.y, this))
@@ -931,6 +1000,16 @@ const Game = {
         this.drawBackgrond()
         this.drawPlayer()
 
+    },
+
+    drawMenuBackground(){
+        this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
+
+        // draw each buttons
+        for (let i = 0; i< this.arenaButtons.length; i++){
+            var elm = this.arenaButtons[i]
+            this.ctx.drawImage(elm.imageInstance, elm.x, elm.y, elm.width, elm.height)
+        }
     },
 
     drawBackgrond() {

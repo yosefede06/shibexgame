@@ -139,4 +139,9 @@ class Obstacle {
     move(playerSpeed) {
         this.position.x -= playerSpeed
     }
+    isTouching(minX, minY, maxX, maxY) {
+        return (minX < this.position.x + this.size.width && maxX > this.position.x
+            && minY < this.position.y + this.size.height && maxY > this.position.y)
+
+    }
 }
