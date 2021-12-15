@@ -4,6 +4,7 @@ const imageInitialBackGround = './images/initialBackgroundShibex.png';
 const imageGameOver = './images/gameoverShibex.png';
 const imageClosureIronUpYellow = './images/shibexUp.png';
 const imageClosureIronDownYellow = './images/shibexDown.png';
+const imageMenuBackground = './images/menubg.png'
 
 // Types of Background
 const presentation_down = 'iron-down';
@@ -49,6 +50,7 @@ class Background {
         this.imagePathGameOver = imageGameOver
         this.imagePathTransitionUp = imageClosureIronUpYellow
         this.imagePathTrasitionDown = imageClosureIronDownYellow
+        this.imageMenuBackground = imageMenuBackground
 
         this.loadingTransitionTime = .5
         this.loadingTransitionWaitTime = 1.3
@@ -93,7 +95,7 @@ class Background {
                 break;
 
             case menu:
-                this.imageInstance.src = 'images/desierto.jpg' // TODO CHANGE HERE WITH THE MENU BACKGROUND
+                this.imageInstance.src = this.imageMenuBackground // TODO CHANGE HERE WITH THE MENU BACKGROUND
                 break;
 
             default:

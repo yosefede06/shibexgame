@@ -4,9 +4,9 @@ class Button {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.img = img;
-        this.imageInstance = new Image()
-        this.imageInstance.src = img
+        //TODO update for last version with images
+        // this.imageInstance = new Image()
+        // this.imageInstance.src = img
         this.imgHovering = imgHovering;
         this.fn = fn;
         this.fn_args = fn_args;
@@ -15,5 +15,6 @@ class Button {
 Button.prototype.onclick = function(mousex, mousey){
     if ( this.x <= mousex && mousex <= this.x + this.width && this.y <= mousey && mousey <= this.y + this.height){
         this.fn(this.fn_args)
+
     }
 }
