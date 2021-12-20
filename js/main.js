@@ -1,3 +1,4 @@
+
 const gameName = 'ShibexRide';
 const authors = 'Shibex Team';
 const version = '1.0.0';
@@ -143,7 +144,11 @@ const Game = {
 
         overallVolume: .15
     },
-
+    //transaction
+    user: undefined,
+    transactionValue: undefined,
+    player_data: undefined,
+    arena_chosed: undefined,
 
     //----- INITIALIZE METHODS -----
 
@@ -212,6 +217,8 @@ const Game = {
         this.background.up.loadingTransitionCurrentTime = 0
         this.background.down.loadingTransitionCurrentTime = 0
         this.player.speedX = this.player.initialSpeedX
+        //data
+        this.player_data = undefined
     },
 
 
@@ -230,16 +237,17 @@ const Game = {
     initButtons()
     {
         // here we can add a button for each arena
-        var button1 = new Button(120, 310, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg')
-        var button2 = new Button(430, 310, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg')
-        var button3 = new Button(750, 300, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png')
-        var button4 = new Button(1050, 300, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg')
+        var button1 = new Button(120, 310, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1')
+        var button2 = new Button(430, 310, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '10')
+        var button3 = new Button(750, 300, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '100')
+        var button4 = new Button(1050, 300, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '1000')
         this.arenaButtons.push(button1)
         this.arenaButtons.push(button2)
         this.arenaButtons.push(button3)
         this.arenaButtons.push(button4)
     },
     start() {
+
         this.loadingScreen()
         this.isPlaying = true
         this.reset()
@@ -1045,12 +1053,7 @@ const Game = {
 
         if (!this.isPlaying) {
 
-            this.ctx.drawImage(
-                this.background.initial.imageInstance,
-                0,
-                0,
-                this.canvas.size.width,
-                this.canvas.size.height)
+            this.ctx.drawImage(this.background.initial.imageInstance, 0, 0, this.canvas.size.width, this.canvas.size.height)
 
         }
 
@@ -1465,9 +1468,9 @@ const Game = {
     //----- GAME OVER -----
 
     gameOver() {
-
+        //SAVE DATA
+        save_data()
         this.isGameOver = true
-
         setTimeout(() => {
 
             this.isPlaying = false
@@ -1640,10 +1643,78 @@ function checkArena(event)
  * change the main bg img
  * @param img_path path to a new bg image
  */
-function updateMainBackground(img_path)
+function updateMainBackground(img_path, price)
 {
     Game.background.left.imageInstance.src = img_path
     Game.background.right.imageInstance.src = img_path;
     Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
-    Game.start()
+    try{
+        if(img_path == 'images/bgVolcan.jpg'){
+            Game.arena_chosed = "Lava"
+            transaction(price)
+        }
+        if(img_path == 'images/ice.jpg'){
+            Game.arena_chosed = "Ice"
+            transaction(price)
+        }
+        if(img_path == 'images/new_desert.png'){
+            Game.arena_chosed = "Desert"
+            transaction(price)
+        }
+        if(img_path == 'images/night.jpg'){
+            Game.arena_chosed = "Night"
+            transaction(price)
+        }
+    }
+    catch{
+        Game.canvas.obejectInDOM.addEventListener('click', checkArena)
+        console.log("error transaction img_path")
+    }
+    Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
+
+
 }
+
+async function transaction(price){
+    console.log("transaction request");
+    const options = {type: "erc20",
+        amount: Moralis.Units.Token(price, "18"),
+        receiver: "0x7D690B97cc136c27dbBF6581D23740977FaD1659",
+        contractAddress: "0x838403e073a79719a0927a16642ca7dcdc642bd5",
+        awaitReceipt: false
+    }
+    let result = await Moralis.transfer(options)
+    result.on("receipt", function (receipt) {
+
+        Game.start();
+    });
+}
+
+async function save_data(){
+    const eth_address = Game.user.get("ethAddress");
+    check_instance()
+    const object = Moralis.Object.extend(Game.arena_chosed)
+    Game.player_data = new object()
+    Game.player_data.setACL(new Moralis.ACL(Game.user))
+    Game.player_data.set("points", Game.distanceDone + (5 * Game.collectedCoins))
+    Game.player_data.set("address", eth_address)
+    await Game.player_data.save()
+}
+
+function check_instance(){
+    if(!Game.user.get(Game.arena_chosed)){
+
+    }
+}
+//
+// const Monster = Moralis.Object.extend("Desert");
+// const query = new Moralis.Query(Monster);
+//
+// //get monster with id xWMyZ4YEGZ
+// query.get("gHSol8elGGeC8b4ZLrEMgINo")
+//     .then((monster) => {
+//         console.log(monster.set("hello", 80))
+//         monster.save()}, (error) => {
+//         // The object was not retrieved successfully.
+//         // error is a Moralis.Error with an error code and message.
+//     });
