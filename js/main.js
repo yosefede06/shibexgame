@@ -1318,6 +1318,12 @@ const Game = {
         this.ctx.fillText(coinsToDraw, 20, 80)
         this.ctx.strokeText(coinsToDraw, 20, 80)
 
+        // We draw the global score
+        const score = Math.floor(this.distanceDone) + 5 * this.collectedCoins
+        const scoreToDraw = `SCORE: ${score}`
+        this.ctx.fillText(scoreToDraw, 20, 110)
+        this.ctx.strokeText(scoreToDraw, 20, 110)
+
     },
 
     drawRockets() {
