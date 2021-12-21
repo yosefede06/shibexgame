@@ -149,6 +149,8 @@ const Game = {
     transactionValue: undefined,
     player_data: undefined,
     arena_chosed: undefined,
+    hash: undefined,
+    transaction: undefined,
 
     //----- INITIALIZE METHODS -----
 
@@ -247,7 +249,6 @@ const Game = {
         this.arenaButtons.push(button4)
     },
     start() {
-
         this.loadingScreen()
         this.isPlaying = true
         this.reset()
@@ -1684,15 +1685,28 @@ async function transaction(price){
         awaitReceipt: false
     }
     let result = await Moralis.transfer(options)
-    result.on("receipt", function (receipt) {
-
-        Game.start();
+    result.on("transactionHash", function(hash){
+        Game.hash = hash;
     });
-}
+    result.on("receipt", function (receipt) {
+        Moralis.web3.eth.getTransaction(Game.hash).then(function(transaction){
+            // wait_transaction_receipt()
+            Game.transaction = transaction;
+            if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()){
+                Game.start();
+            }
+            else{
+                console.log("error with transaction")
+            }
+        });
+    });
 
+}
+// async function wait_transaction_receipt(){
+//
+// }
 async function save_data(){
     const eth_address = Game.user.get("ethAddress");
-    check_instance()
     const object = Moralis.Object.extend(Game.arena_chosed)
     Game.player_data = new object()
     Game.player_data.setACL(new Moralis.ACL(Game.user))
@@ -1701,12 +1715,9 @@ async function save_data(){
     await Game.player_data.save()
 }
 
-function check_instance(){
-    if(!Game.user.get(Game.arena_chosed)){
 
-    }
-}
-//
+
+
 // const Monster = Moralis.Object.extend("Desert");
 // const query = new Moralis.Query(Monster);
 //
@@ -1718,3 +1729,6 @@ function check_instance(){
 //         // The object was not retrieved successfully.
 //         // error is a Moralis.Error with an error code and message.
 //     });
+
+
+
