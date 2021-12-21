@@ -151,6 +151,8 @@ const Game = {
     arena_chosed: undefined,
     hash: undefined,
     transaction: undefined,
+    chain: undefined,
+    transaction_in_proccess: false,
 
     //----- INITIALIZE METHODS -----
 
@@ -211,6 +213,7 @@ const Game = {
         clearInterval(this.gameEngineInterval)
 
         // We reset values
+        transaction_in_proccess = false
         this.isGameOver = false
         this.distanceDone = 0
         this.collectedCoins = 0
@@ -1650,39 +1653,48 @@ function checkArena(event)
  * change the main bg img
  * @param img_path path to a new bg image
  */
-function updateMainBackground(img_path, price)
+async function updateMainBackground(img_path, price)
 {
-    Game.background.left.imageInstance.src = img_path
-    Game.background.right.imageInstance.src = img_path;
-    Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
-    try{
-        if(img_path == 'images/bgVolcan.jpg'){
-            Game.arena_chosed = "Lava"
-            transaction(price)
-        }
-        if(img_path == 'images/ice.jpg'){
-            Game.arena_chosed = "Ice"
-            transaction(price)
-        }
-        if(img_path == 'images/new_desert.png'){
-            Game.arena_chosed = "Desert"
-            transaction(price)
-        }
-        if(img_path == 'images/night.jpg'){
-            Game.arena_chosed = "Night"
-            transaction(price)
-        }
+    Game.chain = await check_iotex_chain()
+    if(!Game.chain){
+        window.alert("Connect to IoTeX chain")
+        add_iotex_chain()
     }
-    catch{
-        Game.canvas.obejectInDOM.addEventListener('click', checkArena)
-        console.log("error transaction img_path")
+    else if(Game.transaction_in_proccess){
+        return false
     }
-    Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
-
-
+    else{
+        Game.background.left.imageInstance.src = img_path
+        Game.background.right.imageInstance.src = img_path;
+        Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
+        try{
+            if(img_path == 'images/bgVolcan.jpg'){
+                    Game.arena_chosed = "Lava"
+                    transaction(price)
+            }
+            if(img_path == 'images/ice.jpg') {
+                    Game.arena_chosed = "Ice"
+                    transaction(price)
+            }
+            if(img_path == 'images/new_desert.png'){
+                    Game.arena_chosed = "Desert"
+                    transaction(price)
+            }
+            if(img_path == 'images/night.jpg') {
+                    Game.arena_chosed = "Night"
+                    transaction(price)
+            }
+        }
+        catch{
+            Game.canvas.obejectInDOM.addEventListener('click', checkArena)
+            console.log("error transaction img_path")
+        }
+        Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
+    }
 }
 
 async function transaction(price){
+    Game.transaction_in_proccess = true;
     console.log("transaction request");
     const options = {type: "erc20",
         amount: Moralis.Units.Token(price, "18"),
@@ -1699,12 +1711,17 @@ async function transaction(price){
             // wait_transaction_receipt()
             Game.transaction = transaction;
             if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()){
+                Game.transaction_in_proccess = false
                 Game.start();
             }
             else{
                 console.log("error with transaction")
             }
         });
+    })
+    .on("error", (error) => {
+        window.alert("transaction denied")
+        Game.transaction_in_proccess = false
     });
 
 }
@@ -1721,7 +1738,23 @@ async function save_data(){
     await Game.player_data.save()
 }
 
-
+async function check_iotex_chain(){
+    const provider = await detectEthereumProvider()
+    if (provider) {
+        const chainId = await provider.request({
+            method: 'eth_chainId'
+        })
+        if("0x1251" == chainId){
+            return true;
+        }
+        else{
+            return false
+        }
+    } else {
+        console.log("not connected to metamask")
+        return false
+    }
+}
 
 
 // const Monster = Moralis.Object.extend("Desert");

@@ -8,7 +8,7 @@ window.onload = function () {
     //
     // };
     //
-    add_iotex_chain()
+
     document.getElementById('my-canvas').onclick = function (event) {
         document.getElementById("start-button").disabled = true
         // Game.user = Moralis.User.current()
@@ -22,6 +22,7 @@ window.onload = function () {
     Game.init()
     document.getElementById('my-canvas').style.opacity = 1
 }
+
 async function add_iotex_chain(){
     window.ethereum.request({
         method: 'wallet_addEthereumChain',
