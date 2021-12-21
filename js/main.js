@@ -1694,7 +1694,7 @@ async function transaction(price){
     result.on("transactionHash", function(hash){
         Game.hash = hash;
     });
-    result.on("receipt", function (receipt) {
+    result.on("receipt", function(receipt) {
         Moralis.web3.eth.getTransaction(Game.hash).then(function(transaction){
             // wait_transaction_receipt()
             Game.transaction = transaction;

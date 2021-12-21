@@ -26,7 +26,7 @@ async function add_iotex_chain(){
     window.ethereum.request({
         method: 'wallet_addEthereumChain',
         params: [{
-            chainId: '4689',
+            chainId: '0x1251',
             chainName: 'IoTeX Mainnet',
             nativeCurrency: {
                 name: 'IoTeX',
