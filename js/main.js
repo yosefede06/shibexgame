@@ -1031,6 +1031,27 @@ const Game = {
         //     var elm = this.arenaButtons[i]
         //     this.ctx.drawImage(elm.imageInstance, elm.x, elm.y, elm.width, elm.height)
         // }
+
+        // draw price for each arena
+        // We draw distance
+        this.arenaButtons.forEach(elem => {
+            const x = elem.x
+            const y = elem.y
+            const width = elem.width
+            const height = elem.height
+            const price = elem.price
+            const priceToDraw = `${price} SHIB`
+            this.ctx.fillText(priceToDraw, x + width / 3, y + height + 20)
+            this.ctx.strokeText(price, x + width / 3, y + height + 20)
+
+        })
+        const distanceToDraw = `${Math.floor(this.distanceDone)}M`
+
+        this.ctx.font = 'italic bold 25px arial,serif'
+        this.ctx.fillStyle = 'orange'
+        this.ctx.fillText(distanceToDraw, 20, 50)
+        this.ctx.lineWidth = 2
+        this.ctx.strokeText(distanceToDraw, 20, 50)
     },
 
     drawBackgrond() {
