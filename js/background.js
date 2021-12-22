@@ -4,7 +4,7 @@ const imageInitialBackGround = './images/initialBackgroundShibex.png';
 const imageGameOver = './images/gameoverShibex.png';
 const imageClosureIronUpYellow = './images/shibexUp.png';
 const imageClosureIronDownYellow = './images/shibexDown.png';
-const imageMenuBackground = './images/menubg.png'
+const imageMenuBackground = './images/arenabg.png'
 
 // Types of Background
 const presentation_down = 'iron-down';

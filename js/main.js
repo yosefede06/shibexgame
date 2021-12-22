@@ -130,6 +130,7 @@ const Game = {
 
     collectedCoins: 0,
     distanceDone: 0,
+    final_score: 0,
     audio: {
         tracks: {
             breakWallSong: new Audio('./audio/break-wall.mp3'),
@@ -638,7 +639,6 @@ const Game = {
                 && playerSpaceData.posY < elm.position.y + elm.size.height
                 && playerSpaceData.posY > elm.position.y) {
 
-//            this.destroyCar(elm)
                 this.player.die()
             }
         })
@@ -1326,6 +1326,13 @@ const Game = {
         const scoreToDraw = `SCORE: ${score}`
         this.ctx.fillText(scoreToDraw, 20, 110)
         this.ctx.strokeText(scoreToDraw, 20, 110)
+        if (this.player.isDead){
+            const score = Math.floor(this.distanceDone) + 5 * this.collectedCoins
+            const scoreToDraw = `YOUR FINAL SCORE IS: ${score}`
+            this.ctx.font = 'italic bold 40px arial, serif'
+            this.ctx.fillText(scoreToDraw, 330, 400)
+            this.ctx.strokeText(scoreToDraw, 330, 400)
+        }
 
     },
 
@@ -1480,9 +1487,9 @@ const Game = {
     gameOver() {
         //SAVE DATA
         save_data()
-        this.isGameOver = true
-        setTimeout(() => {
 
+        setTimeout(() => {
+            this.isGameOver = true
             this.isPlaying = false
 
             // We stop the automatic creation
@@ -1501,7 +1508,7 @@ const Game = {
             this.obstacles = []
             this.cars = []
 
-        }, 1000)
+        }, 3000)
 
     },
 
