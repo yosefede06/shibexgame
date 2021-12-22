@@ -165,7 +165,7 @@ class JoyRoide {
         }
 
         // For sliding when is dead in the floor
-        if (this.isDead && this.isTouchingFloor && !this.gameCtx.isGameOver) {
+        if (this.isDead && this.isTouchingFloor && !this.gameCtx.activateGameOver) {
             if (this.speedX <= 0) {
                 this.speedX = 0
                 this.gameCtx.gameOver()

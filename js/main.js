@@ -35,6 +35,7 @@ const Game = {
     isPlaying: false,
     isLoading: false,
     isGameOver: false,
+    activateGameOver:false,
 
     gameEngineInterval: undefined,
 
@@ -216,6 +217,7 @@ const Game = {
         // We reset values
         transaction_in_proccess = false
         this.isGameOver = false
+        this.activateGameOver = false
         this.distanceDone = 0
         this.collectedCoins = 0
         this.player.isDead = false
@@ -243,10 +245,10 @@ const Game = {
     initButtons()
     {
         // here we can add a button for each arena
-        var button1 = new Button(120, 310, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1')
-        var button2 = new Button(430, 310, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '10')
-        var button3 = new Button(750, 300, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '100')
-        var button4 = new Button(1050, 300, 80, 100, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '1000')
+        var button1 = new Button(120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1')
+        var button2 = new Button(430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '10')
+        var button3 = new Button(740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '100')
+        var button4 = new Button(1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '1000')
         this.arenaButtons.push(button1)
         this.arenaButtons.push(button2)
         this.arenaButtons.push(button3)
@@ -1041,17 +1043,12 @@ const Game = {
             const height = elem.height
             const price = elem.price
             const priceToDraw = `${price} SHIB`
-            this.ctx.fillText(priceToDraw, x + width / 3, y + height + 20)
-            this.ctx.strokeText(price, x + width / 3, y + height + 20)
-
+            this.ctx.font = 'italic bold 20px arial,serif'
+            this.ctx.fillStyle = 'orange'
+            this.ctx.fillText(priceToDraw, x, y + height + 20)
+            this.ctx.lineWidth = 2
+            this.ctx.strokeText(priceToDraw, x, y + height + 20)
         })
-        const distanceToDraw = `${Math.floor(this.distanceDone)}M`
-
-        this.ctx.font = 'italic bold 25px arial,serif'
-        this.ctx.fillStyle = 'orange'
-        this.ctx.fillText(distanceToDraw, 20, 50)
-        this.ctx.lineWidth = 2
-        this.ctx.strokeText(distanceToDraw, 20, 50)
     },
 
     drawBackgrond() {
@@ -1508,11 +1505,11 @@ const Game = {
     gameOver() {
         //SAVE DATA
         save_data()
-
+        console.log('in game over')
+        this.activateGameOver=true
         setTimeout(() => {
-            this.isGameOver = true
             this.isPlaying = false
-
+            this.isGameOver = true
             // We stop the automatic creation
             clearTimeout(this.timeOuts.rockets)
             clearTimeout(this.timeOuts.coins)
