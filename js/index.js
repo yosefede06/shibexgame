@@ -11,6 +11,8 @@ window.onload = function () {
 
     document.getElementById('my-canvas').onclick = function (event) {
         document.getElementById("start-button").disabled = true
+        elem = document.getElementById('my-canvas')
+        elem.requestFullscreen()
         // Game.user = Moralis.User.current()
         if (Game.user && !Game.isPlaying) {
             Game.startMenu()
@@ -21,6 +23,7 @@ window.onload = function () {
     };
     Game.init()
     document.getElementById('my-canvas').style.opacity = 1
+
 }
 
 async function add_iotex_chain(){

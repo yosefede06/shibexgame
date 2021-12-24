@@ -4,8 +4,8 @@ const authors = 'Shibex Team';
 const version = '1.0.0';
 const description = 'Go through the longest distance you can';
 
-const canvasWidth = 1080 * 1.156; //900
-const canvasHeight = 600 * 1.156; //500
+const canvasWidth = 1080 * 1.17; //900
+const canvasHeight = 600 * 1.17; //500
 
 const baseLine = - 120;
 const highLine = 66;
@@ -247,8 +247,8 @@ const Game = {
         // here we can add a button for each arena
         var button1 = new Button(120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1')
         var button2 = new Button(430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '10')
-        var button3 = new Button(740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '100')
-        var button4 = new Button(1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '1000')
+        var button3 = new Button(740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '1')
+        var button4 = new Button(1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '1')
         this.arenaButtons.push(button1)
         this.arenaButtons.push(button2)
         this.arenaButtons.push(button3)
@@ -409,8 +409,6 @@ const Game = {
                     (i * offSet) + randomPosY, i)
                 this.coins.push(newCoin)
             }
-
-
         }
 
         this.timeOuts.coins = setTimeout(() => {this.createCoins()}, randomValue * 1000)
@@ -1042,12 +1040,12 @@ const Game = {
             const width = elem.width
             const height = elem.height
             const price = elem.price
-            const priceToDraw = `${price} SHIB`
-            this.ctx.font = 'italic bold 20px arial,serif'
+            const priceToDraw = `${price} SHIBX`
+            this.ctx.font = 'italic bold 35px arial,serif'
             this.ctx.fillStyle = 'orange'
-            this.ctx.fillText(priceToDraw, x, y + height + 20)
+            this.ctx.fillText(priceToDraw, x - 30, y + height  - 370)
             this.ctx.lineWidth = 2
-            this.ctx.strokeText(priceToDraw, x, y + height + 20)
+            this.ctx.strokeText(priceToDraw, x - 30, y + height - 370)
         })
     },
 
@@ -1760,8 +1758,17 @@ async function save_data(){
     Game.player_data.setACL(new Moralis.ACL(Game.user))
     Game.player_data.set("points", Game.distanceDone + (5 * Game.collectedCoins))
     Game.player_data.set("address", eth_address)
-    await Game.player_data.save()
+    await Game.player_data.save(null, {useMasterKey:true})
 }
+
+// async function update_participants(val){
+//     const Value = Moralis.Object.extend("Number")
+//     const query = new Moralis.Query(Value);
+//     query.get("gHSol8elGGeC8b4ZLrEMgINo")
+//         .then((value) => {
+//             return (value.get(val))
+//         });
+// }
 
 async function check_iotex_chain(){
     const provider = await detectEthereumProvider()
@@ -1793,6 +1800,4 @@ async function check_iotex_chain(){
 //         // The object was not retrieved successfully.
 //         // error is a Moralis.Error with an error code and message.
 //     });
-
-
 
