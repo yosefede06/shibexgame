@@ -155,6 +155,8 @@ const Game = {
     transaction: undefined,
     chain: undefined,
     transaction_in_proccess: false,
+    price: undefined,
+
 
     //----- INITIALIZE METHODS -----
 
@@ -215,7 +217,8 @@ const Game = {
         clearInterval(this.gameEngineInterval)
 
         // We reset values
-        transaction_in_proccess = false
+        this.hash = undefined
+        this.transaction_in_proccess = false
         this.isGameOver = false
         this.activateGameOver = false
         this.distanceDone = 0
@@ -245,10 +248,10 @@ const Game = {
     initButtons()
     {
         // here we can add a button for each arena
-        var button1 = new Button(120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1')
-        var button2 = new Button(430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '10')
-        var button3 = new Button(740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '1')
-        var button4 = new Button(1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '1')
+        var button1 = new Button(120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1', "100K")
+        var button2 = new Button(430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '1000000', "1M")
+        var button3 = new Button(740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '5000000', "5M")
+        var button4 = new Button(1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '10000000', "10M")
         this.arenaButtons.push(button1)
         this.arenaButtons.push(button2)
         this.arenaButtons.push(button3)
@@ -948,8 +951,8 @@ const Game = {
         this.rockets.forEach(elm => {
             elm.move()
         })
-
     },
+
 
     moveObstacles() {
 
@@ -993,6 +996,7 @@ const Game = {
     clearAll() {
         this.ctx.clearRect(0, 0, this.canvas.size.width, this.canvas.size.height)
     },
+
 
     drawAll() {
 
@@ -1039,7 +1043,7 @@ const Game = {
             const y = elem.y
             const width = elem.width
             const height = elem.height
-            const price = elem.price
+            const price = elem.price_draw
             const priceToDraw = `${price} SHIBX`
             this.ctx.font = 'italic bold 35px arial,serif'
             this.ctx.fillStyle = 'orange'
@@ -1502,7 +1506,7 @@ const Game = {
 
     gameOver() {
         //SAVE DATA
-        save_data()
+        save_data(this.transaction, this.price)
         console.log('in game over')
         this.activateGameOver=true
         setTimeout(() => {
@@ -1523,6 +1527,7 @@ const Game = {
             this.walkersFront = []
             this.obstacles = []
             this.cars = []
+            //transaction_empty
 
         }, 3000)
 
@@ -1609,6 +1614,20 @@ const Game = {
     setEventHandlers() {
 
         // Controls
+        window.onmousedown = (e) => {
+
+            if (!this.player.isDead && this.isPlaying) {
+
+                    this.player.isShooting = true
+                    this.player.forces.totalForce = this.player.forces.shootingForce - this.gravityForce
+
+                    // We play the shot audio
+                    this.audio.tracks.shotsSong.play()
+
+                }
+
+        }
+
         window.onkeypress = (e) => {
 
             if (!this.player.isDead && this.isPlaying) {
@@ -1624,6 +1643,16 @@ const Game = {
                 }
 
             }
+        }
+
+        window.onmouseup = (e) => {
+
+                this.player.isShooting = false
+                this.player.forces.totalForce = 0 - this.player.forces.gravityForce
+
+                this.audio.tracks.shotsSong.pause()
+
+            this.player.fireTime = 0
 
         }
 
@@ -1717,6 +1746,7 @@ async function updateMainBackground(img_path, price)
 }
 
 async function transaction(price){
+    Game.price = price
     Game.transaction_in_proccess = true;
     console.log("transaction request");
     const options = {type: "erc20",
@@ -1732,9 +1762,9 @@ async function transaction(price){
     result.on("receipt", function(receipt) {
         Moralis.web3.eth.getTransaction(Game.hash).then(function(transaction){
             // wait_transaction_receipt()
+            console.log(transaction)
             Game.transaction = transaction;
-            if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()){
-                Game.transaction_in_proccess = false
+            if(check_data(price)){
                 Game.start();
             }
             else{
@@ -1746,19 +1776,68 @@ async function transaction(price){
         window.alert("transaction denied")
         Game.transaction_in_proccess = false
     });
+}
 
+function check_data(price){
+    if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()
+        && check_iotex_chain()
+        && check_value(Game.transaction.input) == price){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 // async function wait_transaction_receipt(){
 //
 // }
-async function save_data(){
-    const eth_address = Game.user.get("ethAddress");
-    const object = Moralis.Object.extend(Game.arena_chosed)
-    Game.player_data = new object()
-    Game.player_data.setACL(new Moralis.ACL(Game.user))
-    Game.player_data.set("points", Game.distanceDone + (5 * Game.collectedCoins))
-    Game.player_data.set("address", eth_address)
-    await Game.player_data.save(null, {useMasterKey:true})
+async function save_data(transaction, price){
+    if(check_data(transaction, price)){
+        const eth_address = Game.user.get("ethAddress");
+        const object = Moralis.Object.extend(Game.arena_chosed)
+        Game.player_data = new object()
+        Game.player_data.setACL(new Moralis.ACL(Game.user))
+        Game.player_data.set("points", Game.distanceDone + (5 * Game.collectedCoins))
+        Game.player_data.set("address", eth_address)
+        await Game.player_data.save(null, {useMasterKey:true})
+    }
+    else{
+        console.log("error data")
+    }
+
+    function check_data(transaction, price){
+        if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()
+            && check_iotex_chain()
+            && check_value(transaction.input) == price){
+            Game.price = undefined
+            Game.transaction = undefined
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+}
+
+function check_value(val){
+    for(var i = 0; i < val.length; i++){
+        if(val.substring(i, i+10) == "0000000000"){
+            for(var j = i; j < val.length; j++){
+                if(val[j] != "0"){
+                    for(var k = j; k < val.length; k++){
+                        if(val.substring(k, k+10) == "0000000000"){
+                            for(var l = k; k < val.length; l++){
+                                if(val[l] != "0" && val.substring(l-20, l) == "00000000000000000000"){
+                                    let curr = parseInt(val.substring(l, val.length), 16);
+                                    return curr.toString().substring(0, curr.toString().length-18)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // async function update_participants(val){
@@ -1769,7 +1848,6 @@ async function save_data(){
 //             return (value.get(val))
 //         });
 // }
-
 async function check_iotex_chain(){
     const provider = await detectEthereumProvider()
     if (provider) {
@@ -1788,6 +1866,14 @@ async function check_iotex_chain(){
     }
 }
 
+async function get_players(arena){
+    //param string: "Lava", "Ice", "Desert", "Night"
+    const Value = Moralis.Object.extend("Number")
+    const query = new Moralis.Query(Value);
+    const obj = await query.first();
+    let result = obj.get(arena)
+    console.log(result)
+}
 
 // const Monster = Moralis.Object.extend("Desert");
 // const query = new Moralis.Query(Monster);
@@ -1800,4 +1886,5 @@ async function check_iotex_chain(){
 //         // The object was not retrieved successfully.
 //         // error is a Moralis.Error with an error code and message.
 //     });
+
 

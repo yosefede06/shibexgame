@@ -1,5 +1,5 @@
 class Button {
-    constructor(x, y, width, height, img, imgHovering, fn, fn_args, price) {
+    constructor(x, y, width, height, img, imgHovering, fn, fn_args, price, price_draw) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -11,6 +11,7 @@ class Button {
         this.fn = fn;
         this.fn_args = fn_args;
         this.price = price;
+        this.price_draw = price_draw
     }
 }
 Button.prototype.onclick = function(mousex, mousey){

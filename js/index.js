@@ -15,6 +15,7 @@ window.onload = function () {
         elem.requestFullscreen()
         // Game.user = Moralis.User.current()
         if (Game.user && !Game.isPlaying) {
+
             Game.startMenu()
         }
         else{
@@ -62,7 +63,6 @@ async function login() {
         }
     }
     if (Game.user) {
-
         console.log(Game.user);
         Game.user.save();
         if (!Game.isPlaying) {
