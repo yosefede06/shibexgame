@@ -1911,6 +1911,36 @@ async function get_players(arena){
     return result
 }
 
+async function get_amount_arena(arena){
+    //param string: "Lava", "Ice", "Desert", "Night"
+    const Value = Moralis.Object.extend("Number")
+    const query = new Moralis.Query(Value);
+    const obj = await query.first();
+    let result =  await obj.get("amount" + arena)
+    return result
+}
+
+async function get_winning(){
+    var dict = [];
+    const Value = Moralis.Object.extend("Winners")
+    const query = new Moralis.Query(Value);
+    const data = await query.find();
+    try{
+        for(var i = 0; i < data.length; i++){
+            dict.push({
+                key: data.at(i).attributes.address,
+                value: data.at(i).attributes.money
+            })
+        }
+        console.log(dict)
+        return dict
+    }
+    catch (e) {
+        console.log("error winners data")
+    }
+}
+
+
 // const Monster = Moralis.Object.extend("Desert");
 // const query = new Moralis.Query(Monster);
 //
