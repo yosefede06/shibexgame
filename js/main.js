@@ -182,6 +182,8 @@ const Game = {
         this.background.up = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'iron-up', this)
         this.background.down = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'iron-down', this)
         this.background.menu  = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'menu', this)
+        this.background.game_explanation  = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'game_explanation', this)
+
 
         // Set random creation times
         this.walkersRandomTime.minTime = this.walkersRandomTime.minInicial  // Walkers
@@ -235,23 +237,32 @@ const Game = {
 
     //----- GAME START METHODS -----
 
+    drawGameExplanation(){
 
+        this.ctx.drawImage(this.background.game_explanation.imageInstance, 0, 0, this.canvas.size.width, this.canvas.size.height)
+    },
 
     startMenu()
+    {        this.canvas.obejectInDOM.addEventListener('click', this.arenaMenu.bind(this))
+             this.drawGameExplanation()
+    },
+    arenaMenu()
     {
+        this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu.bind(this))
+        this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
         // start menu where we choose the arena
         this.canvas.obejectInDOM.addEventListener('click', checkArena)
         this.drawMenuBackground();
-    },
 
+    },
 
     initButtons()
     {
         // here we can add a button for each arena
-        var button1 = new Button(120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1', "100K")
-        var button2 = new Button(430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '1000000', "1M")
-        var button3 = new Button(740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '5000000', "5M")
-        var button4 = new Button(1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '10000000', "10M")
+        var button1 = new Button('Lava',120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1', "100K", 3)
+        var button2 = new Button('Ice', 430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '1000000', "1M", 3)
+        var button3 = new Button('Desert',740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '5000000', "5M", 3)
+        var button4 = new Button('Night',1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '10000000', "10M", 3)
         this.arenaButtons.push(button1)
         this.arenaButtons.push(button2)
         this.arenaButtons.push(button3)
@@ -385,8 +396,7 @@ const Game = {
         this.obstacles.forEach(elem => {
             if (elem.isTouching(minPosXRow, minPosYRow, maxPosXRow, maxPosyRow))
             {
-                    // if here the coins is touching the obstacle we want to change the Y position
-                    console.log("TOUCHINGGG")
+                    // if here the coins is touching the obstacle we want to change the Y positiondr
                     flag = false
 
                     // console.log('obs:', obstacleX)
@@ -461,7 +471,6 @@ const Game = {
         var flag = true
         this.coins.forEach(elem => {
             if(elem.isTouching(ob.position.x, ob.position.y, ob.position.x + ob.size.width, ob.position.y+ob.size.height)){
-                console.log("TOUCHINg")
                 flag = false
             }
         })
@@ -1026,7 +1035,7 @@ const Game = {
 
     },
 
-    drawMenuBackground(){
+    async drawMenuBackground(){
         this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
 
         //TODO for now buttons are incrusted in background
@@ -1038,7 +1047,7 @@ const Game = {
 
         // draw price for each arena
         // We draw distance
-        this.arenaButtons.forEach(elem => {
+        for (const elem of this.arenaButtons) {
             const x = elem.x
             const y = elem.y
             const width = elem.width
@@ -1047,10 +1056,38 @@ const Game = {
             const priceToDraw = `${price} SHIBX`
             this.ctx.font = 'italic bold 35px arial,serif'
             this.ctx.fillStyle = 'orange'
-            this.ctx.fillText(priceToDraw, x - 30, y + height  - 370)
             this.ctx.lineWidth = 2
-            this.ctx.strokeText(priceToDraw, x - 30, y + height - 370)
-        })
+            var count = 0
+            count =  await get_players(elem.name);
+            const countToDraw = `${count} / ${elem.capacity}`
+
+
+            if (elem.name == "Lava"){
+                this.ctx.fillText(countToDraw, x, y + height + 50)
+                this.ctx.strokeText(countToDraw, x, y + height + 50)
+                this.ctx.fillText(priceToDraw, x - 60, y + height  - 370)
+                this.ctx.strokeText(priceToDraw, x - 60, y + height - 370)
+            }
+            if (elem.name == 'Ice'){
+                this.ctx.fillText(countToDraw, x + 10, y + height + 50)
+                this.ctx.strokeText(countToDraw, x + 10, y + height + 50)
+                this.ctx.fillText(priceToDraw, x - 30, y + height  - 370)
+                this.ctx.strokeText(priceToDraw, x - 30, y + height - 370)
+            }
+            if (elem.name == 'Desert'){
+                this.ctx.fillText(countToDraw, x + 20, y + height + 50)
+                this.ctx.strokeText(countToDraw, x + 20, y + height + 50)
+                this.ctx.fillText(priceToDraw, x - 30, y + height  - 370)
+                this.ctx.strokeText(priceToDraw, x - 30, y + height - 370)
+            }
+            if (elem.name == 'Night'){
+                this.ctx.fillText(countToDraw, x + 27, y + height + 50)
+                this.ctx.strokeText(countToDraw, x + 27, y + height + 50)
+                this.ctx.fillText(priceToDraw, x - 30, y + height  - 370)
+                this.ctx.strokeText(priceToDraw, x - 30, y + height - 370)
+            }
+
+        }
     },
 
     drawBackgrond() {
@@ -1507,7 +1544,6 @@ const Game = {
     gameOver() {
         //SAVE DATA
         save_data(this.transaction, this.price)
-        console.log('in game over')
         this.activateGameOver=true
         setTimeout(() => {
             this.isPlaying = false
@@ -1871,8 +1907,8 @@ async function get_players(arena){
     const Value = Moralis.Object.extend("Number")
     const query = new Moralis.Query(Value);
     const obj = await query.first();
-    let result = obj.get(arena)
-    console.log(result)
+    let result =  await obj.get(arena)
+    return result
 }
 
 // const Monster = Moralis.Object.extend("Desert");

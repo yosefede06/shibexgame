@@ -1,5 +1,7 @@
 class Button {
-    constructor(x, y, width, height, img, imgHovering, fn, fn_args, price, price_draw) {
+    constructor(name, x, y, width, height, img, imgHovering, fn, fn_args, price, price_draw, capacity) {
+        this.name = name
+        this.capacity = capacity
         this.x = x;
         this.y = y;
         this.width = width;
