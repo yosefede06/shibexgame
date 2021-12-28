@@ -244,7 +244,7 @@ const Game = {
 
     startMenu()
     {        this.canvas.obejectInDOM.addEventListener('click', this.arenaMenu.bind(this))
-             this.drawGameExplanation()
+        this.drawGameExplanation()
     },
     arenaMenu()
     {
@@ -259,10 +259,10 @@ const Game = {
     initButtons()
     {
         // here we can add a button for each arena
-        var button1 = new Button('Lava',120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1', "100K", 3)
-        var button2 = new Button('Ice', 430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '1000000', "1M", 3)
-        var button3 = new Button('Desert',740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '5000000', "5M", 3)
-        var button4 = new Button('Night',1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '10000000', "10M", 3)
+        var button1 = new Button('Lava',120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '100000', "100K", 3)
+        var button2 = new Button('Ice', 430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '200000', "200K", 3)
+        var button3 = new Button('Desert',740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '500000', "500K", 3)
+        var button4 = new Button('Night',1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '1000000', "1M", 3)
         this.arenaButtons.push(button1)
         this.arenaButtons.push(button2)
         this.arenaButtons.push(button3)
@@ -396,11 +396,11 @@ const Game = {
         this.obstacles.forEach(elem => {
             if (elem.isTouching(minPosXRow, minPosYRow, maxPosXRow, maxPosyRow))
             {
-                    // if here the coins is touching the obstacle we want to change the Y positiondr
-                    flag = false
+                // if here the coins is touching the obstacle we want to change the Y positiondr
+                flag = false
 
-                    // console.log('obs:', obstacleX)
-                    // console.log('obstacleY:', obstacleY)
+                // console.log('obs:', obstacleX)
+                // console.log('obstacleY:', obstacleY)
                 //     // coins will be above the obstacle
                 //     let minPosY2 = obstacleY + obstacleHeight
                 //     let randomPosYA = Math.floor(Math.random() * (maxPosY - minPosY2)) + minPosY2
@@ -1654,13 +1654,13 @@ const Game = {
 
             if (!this.player.isDead && this.isPlaying) {
 
-                    this.player.isShooting = true
-                    this.player.forces.totalForce = this.player.forces.shootingForce - this.gravityForce
+                this.player.isShooting = true
+                this.player.forces.totalForce = this.player.forces.shootingForce - this.gravityForce
 
-                    // We play the shot audio
-                    this.audio.tracks.shotsSong.play()
+                // We play the shot audio
+                this.audio.tracks.shotsSong.play()
 
-                }
+            }
 
         }
 
@@ -1683,10 +1683,10 @@ const Game = {
 
         window.onmouseup = (e) => {
 
-                this.player.isShooting = false
-                this.player.forces.totalForce = 0 - this.player.forces.gravityForce
+            this.player.isShooting = false
+            this.player.forces.totalForce = 0 - this.player.forces.gravityForce
 
-                this.audio.tracks.shotsSong.pause()
+            this.audio.tracks.shotsSong.pause()
 
             this.player.fireTime = 0
 
@@ -1757,20 +1757,20 @@ async function updateMainBackground(img_path, price)
         Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
         try{
             if(img_path == 'images/bgVolcan.jpg'){
-                    Game.arena_chosed = "Lava"
-                    transaction(price)
+                Game.arena_chosed = "Lava"
+                transaction(price)
             }
             if(img_path == 'images/ice.jpg') {
-                    Game.arena_chosed = "Ice"
-                    transaction(price)
+                Game.arena_chosed = "Ice"
+                transaction(price)
             }
             if(img_path == 'images/new_desert.png'){
-                    Game.arena_chosed = "Desert"
-                    transaction(price)
+                Game.arena_chosed = "Desert"
+                transaction(price)
             }
             if(img_path == 'images/night.jpg') {
-                    Game.arena_chosed = "Night"
-                    transaction(price)
+                Game.arena_chosed = "Night"
+                transaction(price)
             }
         }
         catch{
@@ -1808,16 +1808,16 @@ async function transaction(price){
             }
         });
     })
-    .on("error", (error) => {
-        window.alert("transaction denied")
-        Game.transaction_in_proccess = false
-    });
+        .on("error", (error) => {
+            window.alert("transaction denied")
+            Game.transaction_in_proccess = false
+        });
 }
 
 function check_data(price){
     if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()
         && check_iotex_chain()
-        && check_value(Game.transaction.input) == price){
+        && (check_value(Game.transaction.input) - price <= 1000)){
         return true;
     }
     else{
@@ -1844,7 +1844,7 @@ async function save_data(transaction, price){
     function check_data(transaction, price){
         if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()
             && check_iotex_chain()
-            && check_value(transaction.input) == price){
+            && (check_value(Game.transaction.input) - price <= 1000)){
             Game.price = undefined
             Game.transaction = undefined
             return true;
