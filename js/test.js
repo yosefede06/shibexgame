@@ -1,6 +1,6 @@
 const a = {
 
-    p1: 'Keren',
+    p1: 'Ilan',
     p2: 'Yosef',
 
 }
