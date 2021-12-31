@@ -11,8 +11,8 @@ window.onload = function () {
 
     document.getElementById('my-canvas').onclick = function (event) {
         document.getElementById("start-button").disabled = true
-        elem = document.getElementById('my-canvas')
-        elem.requestFullscreen()
+        // elem = document.getElementById('my-canvas')
+        // elem.requestFullscreen()
         // Game.user = Moralis.User.current()
         if (Game.user && !Game.isPlaying) {
 
