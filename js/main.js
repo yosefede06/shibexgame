@@ -264,7 +264,7 @@ const Game = {
     initButtons()
     {
         // here we can add a button for each arena
-        var button1 = new Button('Lava',120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '1', "100K", 3)
+        var button1 = new Button('Lava',120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/bgVolcan.jpg', '100000.000001', "100K", 3)
         var button2 = new Button('Ice', 430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/ice.jpg', '200000.000001', "200K", 3)
         var button3 = new Button('Desert',740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/new_desert.png', '500000.000001', "500K", 3)
         var button4 = new Button('Night',1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png', updateMainBackground,'images/night.jpg', '1000000.000001', "1M", 3)
