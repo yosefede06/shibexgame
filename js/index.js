@@ -9,20 +9,20 @@ window.onload = function () {
     // };
     //
 
-    document.getElementById('my-canvas').onclick = function (event) {
-
-        document.getElementById("start-button").disabled = true
-        // elem = document.getElementById('my-canvas')
-        // elem.requestFullscreen()
-        // Game.user = Moralis.User.current()
-        if (Game.user && !Game.isPlaying) {
-
-            Game.startMenu()
-        }
-        else{
-            login()
-        }
-    };
+    // document.getElementById('my-canvas').onclick = function (event) {
+    //
+    //     document.getElementById("start-button").disabled = true
+    //     // elem = document.getElementById('my-canvas')
+    //     // elem.requestFullscreen()
+    //     // Game.user = Moralis.User.current()
+    // if (Game.user && !Game.isPlaying) {
+    //
+    //     Game.startMenu()
+    //     }
+    //     else{
+    //         login()
+    //     }
+    // };
     Game.init()
     document.getElementById('my-canvas').style.opacity = 1
 
@@ -67,7 +67,7 @@ async function login() {
         console.log(Game.user);
         Game.user.save();
         if (!Game.isPlaying) {
-            Game.startMenu()
+            Game.arenaMenu()
         }
     }
 }
