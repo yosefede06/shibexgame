@@ -1767,7 +1767,7 @@ async function transaction(price){
     console.log("transaction request");
     const options = {type: "erc20",
         amount: Moralis.Units.Token(price, "18"),
-        receiver: "0x7D690B97cc136c27dbBF6581D23740977FaD1659",
+        receiver: "0x6c0C7436A63F8E90Ba4aF3782ace272dDC162BEF",
         contractAddress: "0x838403e073a79719a0927a16642ca7dcdc642bd5",
         awaitReceipt: false
     }
