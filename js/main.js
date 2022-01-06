@@ -40,6 +40,7 @@ const Game = {
     isLoading: false,
     isGameOver: false,
     activateGameOver:false,
+    inArenaMenu:false,
 
     gameEngineInterval: undefined,
 
@@ -267,7 +268,7 @@ const Game = {
     },
     arenaMenu()
     {
-        console.log('arenaMenu')
+        this.inArenaMenu = true
         this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
         // this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
         // start menu where we choose the arena
@@ -295,6 +296,7 @@ const Game = {
 
     },
     start() {
+        this.inArenaMenu = false
         this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
         this.canvas.obejectInDOM.removeEventListener('click', checkArena)
         this.canvas.obejectInDOM.removeEventListener('click', checkToolbar)
@@ -1099,7 +1101,7 @@ const Game = {
             }
             const countToDraw = `${elem.playersIn} / ${elem.capacity}`
 
-
+        if(this.inArenaMenu){
             if (elem.name === "Lava"){
                 this.ctx.fillText(countToDraw, x, y + height + 50)
                 this.ctx.strokeText(countToDraw, x, y + height + 50)
@@ -1126,6 +1128,9 @@ const Game = {
             }
 
         }
+
+        }
+
     },
 
 
@@ -1985,6 +1990,7 @@ async function get_winning(){
 
 function rules_btn_handler()
 {
+    Game.inArenaMenu = false
     Game.drawGameExplanation()
 }
 function  update_btn_handler(){
