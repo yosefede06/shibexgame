@@ -35,6 +35,7 @@ Arena.prototype.onclick = async function(mousex, mousey){
             add_iotex_chain()
         }
         else if(this.gctx.transaction_in_proccess){
+            this.gctx.canvas.obejectInDOM.addEventListener('click', checkArena)
             return false
         }
         else{

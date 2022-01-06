@@ -171,6 +171,7 @@ const Game = {
 
         // init Menu Buttons
         this.initArenas()
+        this.initToolbar()
 
 
         // We create the player
@@ -215,8 +216,8 @@ const Game = {
             this.drawInitialBackground()
 
         }
-
-        this.canvas.obejectInDOM.addEventListener('click', this.startMenu.bind(this))
+        this.arenaMenu = this.arenaMenu.bind(this)
+        this.canvas.obejectInDOM.addEventListener('click', this.arenaMenu)
 
 
     },
@@ -255,44 +256,49 @@ const Game = {
     drawGameExplanation(){
 
         this.ctx.drawImage(this.background.game_explanation.imageInstance, 0, 0, this.canvas.size.width, this.canvas.size.height)
+        this.arenaMenu = this.arenaMenu.bind(this)
+        this.canvas.obejectInDOM.addEventListener('click', this.arenaMenu)
     },
 
     startMenu()
     {
-        console.log(this)
-        this.canvas.obejectInDOM.removeEventListener('click', this.startMenu.bind(this))
-        if (Game.user && !Game.isPlaying) {
+        this.arenaMenu()
 
-            this.arenaMenu()
-        }
-        else{
-            login()
-        }
     },
     arenaMenu()
     {
-        // this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu.bind(this))
-        this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
+        console.log('arenaMenu')
+        this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
+        // this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
         // start menu where we choose the arena
-        this.canvas.obejectInDOM.addEventListener('click', checkArena)
+        // this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu.bind(this))
         this.drawMenuBackground();
+        this.canvas.obejectInDOM.addEventListener('click', checkArena)
+        this.canvas.obejectInDOM.addEventListener('click', checkToolbar)
 
     },
     initArenas()
     {
-        var button1 = new Button(120, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png')
-        var button2 = new Button( 430, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png')
-        var button3 = new Button(740, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png')
-        var button4 = new Button(1045, 310, 100, 130, 'images/tmp_button.png', 'images/tmp_button.png')
+        var button1 = new Button(120, 310, 100, 130, 'images/btn_volcano.png', 'images/tmp_button.png')
+        var button2 = new Button( 430, 310, 100, 130, 'images/btn_ice.png', 'images/tmp_button.png')
+        var button3 = new Button(740, 310, 100, 130, 'images/btn_desierto.png', 'images/tmp_button.png')
+        var button4 = new Button(1045, 310, 100, 130, 'images/btn_night.png', 'images/tmp_button.png')
         this.arenas.push(new Arena('Lava','100000.000001', "100K", 3 , button1, 'images/bgVolcan.jpg', this))
         this.arenas.push(new Arena('Ice','200000.000001', "200K", 3, button2, 'images/ice.jpg', this))
         this.arenas.push(new Arena('Desert','500000.000001', "500K", 3, button3, 'images/new_desert.png', this))
         this.arenas.push(new Arena('Night','1000000.000001', "1M", 3, button4, 'images/night.jpg', this))
 
     },
+    initToolbar()
+    {
+        this.toolbar = new Toolbar(this)
+
+    },
     start() {
-        this.canvas.obejectInDOM.removeEventListener('click', this.startMenu.bind(this))
+        this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
         this.canvas.obejectInDOM.removeEventListener('click', checkArena)
+        this.canvas.obejectInDOM.removeEventListener('click', checkToolbar)
+
 
         this.loadingScreen()
         this.isPlaying = true
@@ -1063,12 +1069,15 @@ const Game = {
     async drawMenuBackground(){
         this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
 
-        //TODO for now buttons are incrusted in background
+        // draw tool bar
+        this.ctx.drawImage(this.toolbar.imageInstance, 0, 120, this.toolbar.width, this.toolbar.height, 300, 0, this.toolbar.width/2, this.toolbar.height/2)
+
+        // TODO for now buttons are incrusted in background
         // draw each buttons
-        // for (let i = 0; i< this.arenaButtons.length; i++){
-        //     var elm = this.arenaButtons[i]
-        //     this.ctx.drawImage(elm.imageInstance, elm.x, elm.y, elm.width, elm.height)
-        // }
+        for (let i = 0; i < this.arenas.length; i++){
+            var elm = this.arenas[i].button
+            this.ctx.drawImage(elm.imageInstance, 0, 0, this.canvas.size.width, this.canvas.size.height)
+        }
 
         // draw price for each arena
         // We draw distance
@@ -1094,30 +1103,31 @@ const Game = {
             if (elem.name === "Lava"){
                 this.ctx.fillText(countToDraw, x, y + height + 50)
                 this.ctx.strokeText(countToDraw, x, y + height + 50)
-                this.ctx.fillText(priceToDraw, x - 60, y + height  - 370)
-                this.ctx.strokeText(priceToDraw, x - 60, y + height - 370)
+                this.ctx.fillText(priceToDraw, x - 60, y + height  - 300)
+                this.ctx.strokeText(priceToDraw, x - 60, y + height - 300)
             }
             if (elem.name === 'Ice'){
                 this.ctx.fillText(countToDraw, x + 10, y + height + 50)
                 this.ctx.strokeText(countToDraw, x + 10, y + height + 50)
-                this.ctx.fillText(priceToDraw, x - 30, y + height  - 370)
-                this.ctx.strokeText(priceToDraw, x - 30, y + height - 370)
+                this.ctx.fillText(priceToDraw, x - 30, y + height  - 300)
+                this.ctx.strokeText(priceToDraw, x - 30, y + height - 300)
             }
             if (elem.name === 'Desert'){
                 this.ctx.fillText(countToDraw, x + 20, y + height + 50)
                 this.ctx.strokeText(countToDraw, x + 20, y + height + 50)
-                this.ctx.fillText(priceToDraw, x - 30, y + height  - 370)
-                this.ctx.strokeText(priceToDraw, x - 30, y + height - 370)
+                this.ctx.fillText(priceToDraw, x - 30, y + height  - 300)
+                this.ctx.strokeText(priceToDraw, x - 30, y + height - 300)
             }
             if (elem.name === 'Night'){
                 this.ctx.fillText(countToDraw, x + 27, y + height + 50)
                 this.ctx.strokeText(countToDraw, x + 27, y + height + 50)
-                this.ctx.fillText(priceToDraw, x - 30, y + height  - 370)
-                this.ctx.strokeText(priceToDraw, x - 30, y + height - 370)
+                this.ctx.fillText(priceToDraw, x - 30, y + height  - 300)
+                this.ctx.strokeText(priceToDraw, x - 30, y + height - 300)
             }
 
         }
     },
+
 
     drawBackgrond() {
 
@@ -1574,9 +1584,12 @@ const Game = {
         //SAVE DATA
         save_data(this.transaction, this.price)
         this.activateGameOver=true
+
         setTimeout(() => {
             this.isPlaying = false
             this.isGameOver = true
+            this.arenaMenu = this.arenaMenu.bind(this)
+            this.canvas.obejectInDOM.addEventListener('click', this.arenaMenu)
             // We stop the automatic creation
             clearTimeout(this.timeOuts.rockets)
             clearTimeout(this.timeOuts.coins)
@@ -1755,12 +1768,44 @@ const Game = {
  */
 function checkArena(event)
 {
-    console.log(event.offsetX, event.offsetY)
+    pos = MapClickPosToCanvas(event)
+    console.log(pos.x, pos.y)
     Game.arenas.forEach(elem => {
-        elem.onclick(event.offsetX, event.offsetY)
+        elem.onclick(pos.x, pos.y)
     })
 }
+function map(v,n1,n2,m1,m2){
+    return (v-n1)/(n2-n1)*(m2-m1)+m1;
+}
+function isFullscreen()
+{
+    return !((document.fullScreenElement !== undefined && document.fullScreenElement === null) ||
+        (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) ||
+        (document.mozFullScreen !== undefined && !document.mozFullScreen) ||
+        (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen));
+}
+function MapClickPosToCanvas(event){
+    var x = event.offsetX
+    var y = event.offsetY
+    if (isFullscreen()){
+        var element = event.target
+        let br = element.getBoundingClientRect()
+        let ratio = window.innerWidth/ Game.canvas.size.width;
+        let offset = (window.innerHeight-(Game.canvas.size.height*ratio))/2;
+        x = map(event.clientX-br.left,0,Game.canvas.size.width*ratio,0,element.width);
+        y = map(event.clientY-br.top-offset,0,Game.canvas.size.height*ratio,0,element.height);
 
+    }
+    return {x: x, y:y}
+
+}
+function checkToolbar(event)
+{
+    pos = MapClickPosToCanvas(event)
+
+    console.log(pos.x, pos.y)
+    Game.toolbar.onclick(pos.x, pos.y)
+}
 async function transaction(price){
     Game.price = price
     Game.transaction_in_proccess = true;
@@ -1784,6 +1829,7 @@ async function transaction(price){
                 Game.start()
             }
             else{
+                Game.canvas.obejectInDOM.addEventListener('click', checkArena)
                 console.log("error with transaction")
                 throw 'error with transaction'
             }
@@ -1792,6 +1838,8 @@ async function transaction(price){
         .on("error", (error) => {
             window.alert("transaction denied")
             Game.transaction_in_proccess = false
+            Game.canvas.obejectInDOM.addEventListener('click', checkArena)
+
         });
 }
 
@@ -1935,3 +1983,41 @@ async function get_winning(){
 //     });
 
 
+function rules_btn_handler()
+{
+    Game.drawGameExplanation()
+}
+function  update_btn_handler(){
+    Game.arenas.forEach(elem => {
+        elem.playersIn = undefined
+    })
+    Game.drawMenuBackground()
+
+}
+function full_screen_handler(){
+    var docElm = document.querySelector('#my-canvas');
+
+    if (!isFullscreen()) {
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        } else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        } else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        } else if (docElm.msRequestFullscreen) {
+            docElm.msRequestFullscreen();
+        }
+    }
+    else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+
+}
