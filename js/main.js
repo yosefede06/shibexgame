@@ -1584,9 +1584,12 @@ const Game = {
         //SAVE DATA
         save_data(this.transaction, this.price)
         this.activateGameOver=true
+
         setTimeout(() => {
             this.isPlaying = false
             this.isGameOver = true
+            this.arenaMenu = this.arenaMenu.bind(this)
+            this.canvas.obejectInDOM.addEventListener('click', this.arenaMenu)
             // We stop the automatic creation
             clearTimeout(this.timeOuts.rockets)
             clearTimeout(this.timeOuts.coins)
