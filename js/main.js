@@ -1109,14 +1109,14 @@ const Game = {
             if (elem.name === 'Ice'){
                 this.ctx.fillText(countToDraw, x + 10, y + height + 50)
                 this.ctx.strokeText(countToDraw, x + 10, y + height + 50)
-                this.ctx.fillText(priceToDraw, x - 30, y + height  - 300)
-                this.ctx.strokeText(priceToDraw, x - 30, y + height - 300)
+                this.ctx.fillText(priceToDraw, x - 50, y + height  - 300)
+                this.ctx.strokeText(priceToDraw, x - 50, y + height - 300)
             }
             if (elem.name === 'Desert'){
                 this.ctx.fillText(countToDraw, x + 20, y + height + 50)
                 this.ctx.strokeText(countToDraw, x + 20, y + height + 50)
-                this.ctx.fillText(priceToDraw, x - 30, y + height  - 300)
-                this.ctx.strokeText(priceToDraw, x - 30, y + height - 300)
+                this.ctx.fillText(priceToDraw, x - 50, y + height  - 300)
+                this.ctx.strokeText(priceToDraw, x - 50, y + height - 300)
             }
             if (elem.name === 'Night'){
                 this.ctx.fillText(countToDraw, x + 27, y + height + 50)
