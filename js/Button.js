@@ -4,9 +4,11 @@ class Button {
         this.y = y;
         this.width = width;
         this.height = height;
-        //TODO update for last version with images
-        // this.imageInstance = new Image()
-        // this.imageInstance.src = img
+        if (img !== undefined) {
+            this.imageInstance = new Image()
+            this.imageInstance.src = img
+        }
+
         this.imgHovering = imgHovering;
         this.fn = fn;
         this.fn_args = fn_args;
