@@ -2027,3 +2027,14 @@ function full_screen_handler(){
     }
 
 }
+async function ranking_btn_handler(){
+    console.log('ranking')
+    var winners = await get_winning()
+    winners.sort((a, b) => a.value > b.value ? -1 : 1)
+    console.log('retrieved data')
+
+}
+
+function iotex_btn_handler(){
+    window.open("https://iotexscan.io/token/0x838403e073a79719a0927a16642ca7dcdc642bd5#token_transfer", '_blank')
+}

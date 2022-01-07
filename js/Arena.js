@@ -32,6 +32,7 @@ Arena.prototype.onclick = async function(mousex, mousey){
         this.gctx.chain = await check_iotex_chain()
         if(!this.gctx.chain){
             window.alert("Connect to IoTeX chain")
+            this.gctx.canvas.obejectInDOM.addEventListener('click', checkArena)
             add_iotex_chain()
         }
         else if(this.gctx.transaction_in_proccess){
