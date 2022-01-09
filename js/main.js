@@ -272,10 +272,10 @@ const Game = {
     },
     initArenas()
     {
-        var button1 = new Button(120, 310, 100, 130, 'images/btn_volcano.png', 'images/tmp_button.png')
-        var button2 = new Button( 430, 310, 100, 130, 'images/btn_ice.png', 'images/tmp_button.png')
-        var button3 = new Button(740, 310, 100, 130, 'images/btn_desierto.png', 'images/tmp_button.png')
-        var button4 = new Button(1045, 310, 100, 130, 'images/btn_night.png', 'images/tmp_button.png')
+        var button1 = new Button(120, 310, 100, 130, this,'images/btn_volcano.png', 'images/tmp_button.png')
+        var button2 = new Button( 430, 310, 100, 130, this,'images/btn_ice.png', 'images/tmp_button.png')
+        var button3 = new Button(740, 310, 100, 130, this,'images/btn_desierto.png', 'images/tmp_button.png')
+        var button4 = new Button(1045, 310, 100, 130, this,'images/btn_night.png', 'images/tmp_button.png')
         this.arenas.push(new Arena('Lava','1.000001', "100K", 3 , button1, 'images/bgVolcan.jpg', this))
         this.arenas.push(new Arena('Ice','200000.000001', "200K", 3, button2, 'images/ice.jpg', this))
         this.arenas.push(new Arena('Desert','500000.000001', "500K", 3, button3, 'images/new_desert.png', this))
@@ -1880,12 +1880,100 @@ function full_screen_handler(){
 
 }
 async function ranking_btn_handler(){
-    console.log('ranking')
+    Game.inArenaMenu = false
+
+    // not available in full screen
+    if (isFullscreen()){
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }}
+
+
+    // get data
     var winners = await get_winning()
-    winners.sort((a, b) => a.value > b.value ? -1 : 1)
+    console.log('ranking')
+    // winners.sort((a, b) => a.value > b.value ? -1 : 1)
     console.log('retrieved data')
 
+
+
+    // Drawing bg
+    Game.ctx.clearRect(0, 0, Game.canvas.size.width, Game.canvas.size.height);
+    // Game.ctx.drawImage(Game.background.rank.imageInstance, 0, 0, Game.canvas.size.width, Game.canvas.size.height)
+    Game.ctx.fillStyle = "orange";
+    Game.ctx.fillRect(0, 0, Game.canvas.size.width, Game.canvas.size.height);
+    Game.ctx.fillStyle = "#040331";
+    Game.ctx.fillRect(0, 0, Game.canvas.size.width, Game.canvas.size.height / 7);
+
+    Game.ctx.font = 'italic bold 50px arial,serif'
+    Game.ctx.fillStyle = 'orange'
+    Game.ctx.fillText('Ranking', 500, 70)
+    Game.ctx.lineWidth = 2
+    Game.ctx.strokeText('Ranking', 500, 70)
+
+
+    // winners =[['1', 'dddfssc', '5'], ['2', 'fejfbhsjcj', '10'], ['3', 'ncdichie', -40],['3', 'ncdichie', -40],['3', 'ncdichie', -40],
+    // ['3', 'ncdichie', -40],['3', 'ncdichie', -40],['3', 'ncdichie', -40],['3', 'ncdichie', -40],['3', 'ncdichie', -40],
+    // ['3', 'ncdichie', -40],['3', 'ncdichie', -40],['3', 'ncdichie', -40],['3', 'ncdichie', -40],['3', 'ncdichie', -40],
+    // ['3', 'ncdichie', -40],['3', 'ncdichie', -40]]
+
+    // creating a table div
+    var new_table = document.createElement('table')
+    new_table.setAttribute('id', 'my-table')
+    new_table.setAttribute('class', 'display')
+    var currentDiv = document.getElementById('table-div');
+    currentDiv.appendChild(new_table)
+
+    // creation of the table
+    $(document).ready(function() {
+        var t = $('#my-table').DataTable( {
+            data: winners,
+            "bLengthChange": false,
+            columns: [
+                {title: 'Rank'},
+                { title: "Adress" },
+                { title: "Balance" },
+            ]
+        } );
+        t.on( 'order.dt search.dt', function () {
+            t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
+    } );
+
+    // adding back button
+    Game.ctx.font = 'italic bold 30px arial,serif'
+    Game.bck_btn = new Button(560, 630, 100, 50, Game, undefined, undefined, back_tbn_handler,undefined, undefined)
+    Game.bck_btn.draw('Back')
+    Game.canvas.obejectInDOM.addEventListener('click', back_tbn_handler)
+
 }
+
+function back_tbn_handler(event){
+    pos = MapClickPosToCanvas(event)
+    if(Game.bck_btn.onclick(pos.x, pos.y)){
+
+        //delete table
+        var parent = document.getElementById('table-div')
+        while( parent.lastElementChild){
+            parent.removeChild(parent.lastElementChild)
+        }
+        Game.bck_btn = undefined
+
+        // back to arena menu
+        Game.arenaMenu()
+        console.log('click on back')
+        Game.canvas.obejectInDOM.removeEventListener('click', back_tbn_handler)
+    }
+}
+
 
 function iotex_btn_handler(){
     window.open("https://iotexscan.io/token/0x838403e073a79719a0927a16642ca7dcdc642bd5#token_transfer", '_blank')
