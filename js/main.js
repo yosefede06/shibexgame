@@ -258,8 +258,8 @@ const Game = {
 
     drawHelpExplanation(){
         this.ctx.fillStyle = "orange";
-        this.ctx.fillRect(200, 200, 800, 261)
-        this.ctx.drawImage(this.background.help.imageInstance, 200, 200, 800, 261)
+        this.ctx.fillRect(250, 200, 800, 261)
+        this.ctx.drawImage(this.background.help.imageInstance, 250, 200, 800, 261)
 
     },
 
