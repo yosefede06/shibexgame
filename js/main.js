@@ -151,22 +151,15 @@ const Game = {
 
         overallVolume: .15
     },
-    //transaction
     user: undefined,
-    transactionValue: undefined,
-    player_data: undefined,
-    arena_chosed: undefined,
-    hash: undefined,
     transaction: undefined,
-    chain: undefined,
-    transaction_in_proccess: false,
-    price: undefined,
+    player_data: undefined,
 
 
     //----- INITIALIZE METHODS -----
 
     init() {
-
+        this.transaction = new Transaction()
         this.setCanvasDimensions()
         this.ctx = this.canvas.obejectInDOM.getContext('2d')
 
@@ -236,8 +229,7 @@ const Game = {
         clearInterval(this.gameEngineInterval)
 
         // We reset values
-        this.hash = undefined
-        this.transaction_in_proccess = false
+        this.transaction.transaction_in_proccess = false
         this.isGameOver = false
         this.activateGameOver = false
         this.distanceDone = 0
@@ -284,7 +276,7 @@ const Game = {
         var button2 = new Button( 430, 310, 100, 130, 'images/btn_ice.png', 'images/tmp_button.png')
         var button3 = new Button(740, 310, 100, 130, 'images/btn_desierto.png', 'images/tmp_button.png')
         var button4 = new Button(1045, 310, 100, 130, 'images/btn_night.png', 'images/tmp_button.png')
-        this.arenas.push(new Arena('Lava','100000.000001', "100K", 3 , button1, 'images/bgVolcan.jpg', this))
+        this.arenas.push(new Arena('Lava','1.000001', "100K", 3 , button1, 'images/bgVolcan.jpg', this))
         this.arenas.push(new Arena('Ice','200000.000001', "200K", 3, button2, 'images/ice.jpg', this))
         this.arenas.push(new Arena('Desert','500000.000001', "500K", 3, button3, 'images/new_desert.png', this))
         this.arenas.push(new Arena('Night','1000000.000001', "1M", 3, button4, 'images/night.jpg', this))
@@ -1587,7 +1579,7 @@ const Game = {
 
     gameOver() {
         //SAVE DATA
-        save_data(this.transaction, this.price)
+        save_data(this.transaction.hash)
         this.activateGameOver=true
 
         setTimeout(() => {
@@ -1779,6 +1771,7 @@ function checkArena(event)
         elem.onclick(pos.x, pos.y)
     })
 }
+
 function map(v,n1,n2,m1,m2){
     return (v-n1)/(n2-n1)*(m2-m1)+m1;
 }
@@ -1811,147 +1804,19 @@ function checkToolbar(event)
     console.log(pos.x, pos.y)
     Game.toolbar.onclick(pos.x, pos.y)
 }
-async function transaction(price){
-    Game.price = price
-    Game.transaction_in_proccess = true;
-    console.log("transaction request");
-    const options = {type: "erc20",
-        amount: Moralis.Units.Token(price, "18"),
-        receiver: "0x6c0C7436A63F8E90Ba4aF3782ace272dDC162BEF",
-        contractAddress: "0x838403e073a79719a0927a16642ca7dcdc642bd5",
-        awaitReceipt: false
-    }
-    let result = await Moralis.transfer(options)
-    result.on("transactionHash", function(hash){
-        Game.hash = hash;
-    });
-    result.on("receipt", function(receipt) {
-        Moralis.web3.eth.getTransaction(Game.hash).then(function(transaction){
-            // wait_transaction_receipt()
-            console.log(transaction)
-            Game.transaction = transaction;
-            if(check_data(price)){
-                Game.start()
-            }
-            else{
-                Game.canvas.obejectInDOM.addEventListener('click', checkArena)
-                console.log("error with transaction")
-                throw 'error with transaction'
-            }
-        });
-    })
-        .on("error", (error) => {
-            window.alert("transaction denied")
-            Game.transaction_in_proccess = false
-            Game.canvas.obejectInDOM.addEventListener('click', checkArena)
 
-        });
-}
 
-function check_data(price){
-    if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()
-        && check_iotex_chain()
-        && (check_value(Game.transaction.input) - price <= 1000)){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-// async function wait_transaction_receipt(){
-//
-// }
-async function save_data(transaction, price){
-    if(check_data(transaction, price)){
+async function save_data(hash){
         const eth_address = Game.user.get("ethAddress");
-        const object = Moralis.Object.extend(Game.arena_chosed)
+        const object = Moralis.Object.extend(Game.transaction.arena)
         Game.player_data = new object()
         Game.player_data.setACL(new Moralis.ACL(Game.user))
         Game.player_data.set("points", Game.distanceDone + (5 * Game.collectedCoins))
         Game.player_data.set("address", eth_address)
+        Game.player_data.set("hash", hash)
+        Game.transaction = new Transaction()
         await Game.player_data.save(null, {useMasterKey:true})
-    }
-    else{
-        console.log("error data")
-    }
 
-    function check_data(transaction, price){
-        if(Game.transaction.from.toUpperCase() == Game.user.get("ethAddress").toUpperCase()
-            && check_iotex_chain()
-            && (check_value(Game.transaction.input) - price <= 1000)){
-            Game.price = undefined
-            Game.transaction = undefined
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-}
-
-function check_value(val){
-    for(var i = 0; i < val.length; i++){
-        if(val.substring(i, i+10) == "0000000000"){
-            for(var j = i; j < val.length; j++){
-                if(val[j] != "0"){
-                    for(var k = j; k < val.length; k++){
-                        if(val.substring(k, k+10) == "0000000000"){
-                            for(var l = k; k < val.length; l++){
-                                if(val[l] != "0" && val.substring(l-20, l) == "00000000000000000000"){
-                                    let curr = parseInt(val.substring(l, val.length), 16);
-                                    return curr.toString().substring(0, curr.toString().length-18)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-// async function update_participants(val){
-//     const Value = Moralis.Object.extend("Number")
-//     const query = new Moralis.Query(Value);
-//     query.get("gHSol8elGGeC8b4ZLrEMgINo")
-//         .then((value) => {
-//             return (value.get(val))
-//         });
-// }
-async function check_iotex_chain(){
-    const provider = await detectEthereumProvider()
-    if (provider) {
-        const chainId = await provider.request({
-            method: 'eth_chainId'
-        })
-        if("0x1251" == chainId){
-            return true;
-        }
-        else{
-            return false
-        }
-    } else {
-        console.log("not connected to metamask")
-        return false
-    }
-}
-
-async function get_players(arena){
-    //param string: "Lava", "Ice", "Desert", "Night"
-    const Value = Moralis.Object.extend("Number")
-    const query = new Moralis.Query(Value);
-    const obj = await query.first();
-    let result =  await obj.get(arena)
-    return result
-}
-
-async function get_amount_arena(arena){
-    //param string: "Lava", "Ice", "Desert", "Night"
-    const Value = Moralis.Object.extend("Number")
-    const query = new Moralis.Query(Value);
-    const obj = await query.first();
-    let result =  await obj.get("amount" + arena)
-    return result
 }
 
 async function get_winning(){
@@ -1975,25 +1840,12 @@ async function get_winning(){
 }
 
 
-// const Monster = Moralis.Object.extend("Desert");
-// const query = new Moralis.Query(Monster);
-//
-// //get monster with id xWMyZ4YEGZ
-// query.get("gHSol8elGGeC8b4ZLrEMgINo")
-//     .then((monster) => {
-//         console.log(monster.set("hello", 80))
-//         monster.save()}, (error) => {
-//         // The object was not retrieved successfully.
-//         // error is a Moralis.Error with an error code and message.
-//     });
-
-
 function rules_btn_handler()
 {
     Game.inArenaMenu = false
     Game.drawGameExplanation()
 }
-function  update_btn_handler(){
+function update_btn_handler(){
     Game.arenas.forEach(elem => {
         elem.playersIn = undefined
     })

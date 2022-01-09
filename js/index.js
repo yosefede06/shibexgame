@@ -50,9 +50,9 @@ async function add_iotex_chain(){
 }
 
 async function login() {
+    // Moralis.User.current()
     add_iotex_chain()
     console.log("login clicked");
-    var eth_address = null;
     if(!Game.user) {
         try{
             console.log("proccesing")
