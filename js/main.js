@@ -1900,6 +1900,10 @@ function full_screen_handler(){
 
 }
 async function ranking_btn_handler(){
+    Game.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
+    Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
+    Game.canvas.obejectInDOM.removeEventListener('click', checkToolbar)
+    Game.canvas.obejectInDOM.removeEventListener('mousemove', checkToolbarHover)
     Game.inArenaMenu = false
 
     // not available in full screen
