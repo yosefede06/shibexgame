@@ -1857,6 +1857,10 @@ async function get_winning(){
 }
 function rules_btn_handler()
 {
+    Game.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
+    Game.canvas.obejectInDOM.removeEventListener('click', checkArena)
+    Game.canvas.obejectInDOM.removeEventListener('click', checkToolbar)
+    Game.canvas.obejectInDOM.removeEventListener('mousemove', checkToolbarHover)
     Game.inArenaMenu = false
     Game.drawGameExplanation()
 }
@@ -2001,7 +2005,6 @@ function back_tbn_handler(event){
         Game.canvas.obejectInDOM.removeEventListener('click', back_tbn_handler)
     }
 }
-
 
 function iotex_btn_handler(){
     window.open("https://iotexscan.io/token/0x838403e073a79719a0927a16642ca7dcdc642bd5#token_transfer", '_blank')
