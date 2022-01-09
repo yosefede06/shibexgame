@@ -1846,7 +1846,7 @@ async function get_winning(){
     const data = await query.find();
     try{
         for(var i = 0; i < data.length; i++){
-            dict.push([i, data.at(i).attributes.address, data.at(i).attributes.money])
+            dict.push([i, data.at(i).attributes.address,data.at(i).attributes.score, data.at(i).attributes.money])
         }
         console.log(dict)
         return dict
@@ -1916,9 +1916,8 @@ async function ranking_btn_handler(){
 
 
     // get data
-    var winners = await get_winning()
     console.log('ranking')
-    // winners.sort((a, b) => a.value > b.value ? -1 : 1)
+    var winners = await get_winning()
     console.log('retrieved data')
 
 
@@ -1955,9 +1954,14 @@ async function ranking_btn_handler(){
         var t = $('#my-table').DataTable( {
             data: winners,
             "bLengthChange": false,
+            "aoColumnDefs": [
+                { 'bSortable': false, 'aTargets': [ 0 ] }
+            ],
+            "order": [[ 3, "desc" ]],
             columns: [
                 {title: 'Rank'},
                 { title: "Adress" },
+                { title: "Score" },
                 { title: "Balance" },
             ]
         } );
