@@ -6,6 +6,7 @@ const imageClosureIronUpYellow = './images/shibexUp.png';
 const imageClosureIronDownYellow = './images/shibexDown.png';
 const imageMenuBackground = './images/arenabg2.png'
 const imageGameExplanation = './images/game_explanation.jpeg'
+const imageHelp = './images/help.png'
 
 // Types of Background
 const presentation_down = 'iron-down';
@@ -16,6 +17,7 @@ const gameOverBg = 'gameOver';
 const closeState = 'close';
 const menu = 'menu';
 const game_explanation = 'game_explanation';
+const help = 'help'
 
 
 class Background {
@@ -54,6 +56,7 @@ class Background {
         this.imagePathTrasitionDown = imageClosureIronDownYellow
         this.imageMenuBackground = imageMenuBackground
         this.imageGameExplanation = imageGameExplanation
+        this.imageHelp = imageHelp
 
         this.loadingTransitionTime = .5
         this.loadingTransitionWaitTime = 1.3
@@ -103,6 +106,10 @@ class Background {
 
             case game_explanation:
                 this.imageInstance.src = this.imageGameExplanation
+                break;
+
+            case help:
+                this.imageInstance.src = this.imageHelp
                 break;
 
             default:

@@ -41,6 +41,7 @@ const Game = {
     isGameOver: false,
     activateGameOver:false,
     inArenaMenu:false,
+    isHelpActive:false,
 
     gameEngineInterval: undefined,
 
@@ -183,6 +184,8 @@ const Game = {
         this.background.down = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'iron-down', this)
         this.background.menu  = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'menu', this)
         this.background.game_explanation  = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'game_explanation', this)
+        this.background.help = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'help', this)
+
 
 
         // Set random creation times
@@ -253,6 +256,13 @@ const Game = {
         this.canvas.obejectInDOM.addEventListener('click', this.arenaMenu)
     },
 
+    drawHelpExplanation(){
+        this.ctx.fillStyle = "orange";
+        this.ctx.fillRect(200, 200, 800, 261)
+        this.ctx.drawImage(this.background.help.imageInstance, 200, 200, 800, 261)
+
+    },
+
     startMenu()
     {
         this.arenaMenu()
@@ -268,6 +278,7 @@ const Game = {
         this.drawMenuBackground();
         this.canvas.obejectInDOM.addEventListener('click', checkArena)
         this.canvas.obejectInDOM.addEventListener('click', checkToolbar)
+        this.canvas.obejectInDOM.addEventListener('mousemove', checkToolbarHover)
 
     },
     initArenas()
@@ -292,6 +303,8 @@ const Game = {
         this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
         this.canvas.obejectInDOM.removeEventListener('click', checkArena)
         this.canvas.obejectInDOM.removeEventListener('click', checkToolbar)
+        this.canvas.obejectInDOM.removeEventListener('mousemove', checkToolbarHover)
+
 
 
         this.loadingScreen()
@@ -1064,9 +1077,9 @@ const Game = {
         this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
 
         // draw tool bar
-        this.ctx.drawImage(this.toolbar.imageInstance, 0, 120, this.toolbar.width, this.toolbar.height, 300, 0, this.toolbar.width/2, this.toolbar.height/2)
+        this.toolbar.draw()
+        // this.ctx.drawImage(this.toolbar.imageInstance, 0, 120, this.toolbar.width, this.toolbar.height, 300, 0, this.toolbar.width/2, this.toolbar.height/2)
 
-        // TODO for now buttons are incrusted in background
         // draw each buttons
         for (let i = 0; i < this.arenas.length; i++){
             var elm = this.arenas[i].button
@@ -1074,7 +1087,6 @@ const Game = {
         }
 
         // draw price for each arena
-        // We draw distance
         for (const elem of this.arenas) {
             var button = elem.button
             const x = button.x
@@ -1766,7 +1778,6 @@ const Game = {
 function checkArena(event)
 {
     pos = MapClickPosToCanvas(event)
-    console.log(pos.x, pos.y)
     Game.arenas.forEach(elem => {
         elem.onclick(pos.x, pos.y)
     })
@@ -1801,8 +1812,17 @@ function checkToolbar(event)
 {
     pos = MapClickPosToCanvas(event)
 
-    console.log(pos.x, pos.y)
     Game.toolbar.onclick(pos.x, pos.y)
+}
+function checkToolbarHover(event){
+    pos = MapClickPosToCanvas(event)
+
+    // if not on the help button we clear the help rendering
+    if(!Game.toolbar.onmouseover(pos.x, pos.y) && Game.isHelpActive){
+        Game.drawMenuBackground()
+        Game.isHelpActive = false
+    }
+
 }
 
 
@@ -1826,10 +1846,7 @@ async function get_winning(){
     const data = await query.find();
     try{
         for(var i = 0; i < data.length; i++){
-            dict.push({
-                key: data.at(i).attributes.address,
-                value: data.at(i).attributes.money
-            })
+            dict.push([i, data.at(i).attributes.address, data.at(i).attributes.money])
         }
         console.log(dict)
         return dict
@@ -1838,13 +1855,16 @@ async function get_winning(){
         console.log("error winners data")
     }
 }
-
-
 function rules_btn_handler()
 {
     Game.inArenaMenu = false
     Game.drawGameExplanation()
 }
+function help_btn_handler(){
+    Game.isHelpActive = true
+    Game.drawHelpExplanation()
+}
+
 function update_btn_handler(){
     Game.arenas.forEach(elem => {
         elem.playersIn = undefined
