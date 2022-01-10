@@ -1968,9 +1968,9 @@ async function ranking_btn_handler(){
             "order": [[ 3, "desc" ]],
             columns: [
                 {title: 'Rank'},
-                { title: "Adress" },
-                { title: "Score" },
-                { title: "Balance" },
+                { title: "ADDRESS" },
+                { title: "MAX SCORE" },
+                { title: "EARNINGS" },
             ]
         } );
         t.on( 'order.dt search.dt', function () {
