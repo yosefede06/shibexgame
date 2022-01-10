@@ -1951,6 +1951,12 @@ async function ranking_btn_handler(){
     // ['3', 'ncdichie', -40],['3', 'ncdichie', -40]]
 
     // creating a table div
+    var cur_div = document.getElementById('game-board')
+    var new_div = document.createElement('div')
+    new_div.setAttribute('id', 'table-div')
+    cur_div.appendChild(new_div)
+
+
     var new_table = document.createElement('table')
     new_table.setAttribute('id', 'my-table')
     new_table.setAttribute('class', 'display')
@@ -1997,6 +2003,11 @@ function back_tbn_handler(event){
         while( parent.lastElementChild){
             parent.removeChild(parent.lastElementChild)
         }
+        // remove table div
+        parent = document.getElementById('game-board')
+        var child = document.getElementById('table-div')
+        parent.removeChild(child)
+
         Game.bck_btn = undefined
 
         // back to arena menu
