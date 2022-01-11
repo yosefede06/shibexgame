@@ -287,7 +287,7 @@ const Game = {
         var button2 = new Button( 430, 310, 100, 130, this,'images/btn_ice.png', 'images/tmp_button.png')
         var button3 = new Button(740, 310, 100, 130, this,'images/btn_desierto.png', 'images/tmp_button.png')
         var button4 = new Button(1045, 310, 100, 130, this,'images/btn_night.png', 'images/tmp_button.png')
-        this.arenas.push(new Arena('Lava','1.000001', "100K", 3 , button1, 'images/bgVolcan.jpg', this))
+        this.arenas.push(new Arena('Lava','100000.000001', "100K", 3 , button1, 'images/bgVolcan.jpg', this))
         this.arenas.push(new Arena('Ice','200000.000001', "200K", 3, button2, 'images/ice.jpg', this))
         this.arenas.push(new Arena('Desert','500000.000001', "500K", 3, button3, 'images/new_desert.png', this))
         this.arenas.push(new Arena('Night','1000000.000001', "1M", 3, button4, 'images/night.jpg', this))
@@ -1846,10 +1846,14 @@ async function get_winning(){
     const data = await query.find();
     try{
         for(var i = 0; i < data.length; i++){
-            dict.push([i, data.at(i).attributes.address,data.at(i).attributes.score, data.at(i).attributes.money])
+            let truncate = data.at(i).attributes.address.substring(0, 5) + "..." + data.at(i).attributes.address.substring(38, 42)
+            dict.push([i, truncate, Math.round(data.at(i).attributes.score)])
+            // data.at(i).attributes.money
         }
-        console.log(dict)
-        return dict
+        dict.sort((a, b) => parseFloat(b[2]) - parseFloat(a[2]));
+        const new_dict = dict.slice(0, 20);
+        console.log(new_dict)
+        return new_dict
     }
     catch (e) {
         console.log("error winners data")
@@ -1928,8 +1932,6 @@ async function ranking_btn_handler(){
     var winners = await get_winning()
     console.log('retrieved data')
 
-
-
     // Drawing bg
     Game.ctx.clearRect(0, 0, Game.canvas.size.width, Game.canvas.size.height);
     // Game.ctx.drawImage(Game.background.rank.imageInstance, 0, 0, Game.canvas.size.width, Game.canvas.size.height)
@@ -1971,12 +1973,11 @@ async function ranking_btn_handler(){
             "aoColumnDefs": [
                 { 'bSortable': false, 'aTargets': [ 0 ] }
             ],
-            "order": [[ 3, "desc" ]],
+            "order": [[ 2, "desc" ]],
             columns: [
                 {title: 'Rank'},
                 { title: "ADDRESS" },
                 { title: "MAX SCORE" },
-                { title: "EARNINGS" },
             ]
         } );
         t.on( 'order.dt search.dt', function () {

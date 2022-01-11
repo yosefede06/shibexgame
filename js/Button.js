@@ -45,6 +45,7 @@ class Button {
 
     }
 }
+
 Button.prototype.onclick = function(mousex, mousey){
     return this.x <= mousex && mousex <= this.x + this.width && this.y <= mousey && mousey <= this.y + this.height;
 

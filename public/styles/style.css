@@ -1,5 +1,6 @@
 body {
   text-align: center;
+
 }
 
 body h1 {
@@ -13,17 +14,35 @@ body button {
   color: #fff;
   padding: 10px 20px;
   border: 0;
-  box-shadow: 0;
+  box-shadow: none;
   border-radius: 5px;
   margin-bottom: 20px;
 
   display: none;
 }
 
-#my-canvas{
+#game-board{
+  width: 1264px;
+  height: 702px;
+  position: relative;
+  margin: auto;
+}
 
+#my-canvas{
   opacity: 0;
   transition: all;
   transition-duration: 4s;
-
+  position: absolute;
+  display: block;
 }
+
+#table-div{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 400px;
+}
+
