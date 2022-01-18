@@ -71,13 +71,13 @@ Arena.prototype.onclick = async function(mousex, mousey){
         }
         else{
             this.updateArenaBgImage()
-            try{
+            // try{
                 await this.gctx.transaction.transfer(this.price, Game.user.get("ethAddress"), this.name)
-            }
-            catch{
-                this.gctx.canvas.obejectInDOM.addEventListener('click', checkArena)
-                console.log("error transaction img_path")
-            }
+            // }
+            // catch{
+            //     this.gctx.canvas.obejectInDOM.addEventListener('click', checkArena)
+            //     console.log("error transaction img_path")
+            // }
         }
 
     }
