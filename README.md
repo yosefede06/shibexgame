@@ -6,7 +6,7 @@ A game inspired on the game JetPack Joyride
 
 1. Fork this repo.
 
-2. Clone this repo: Open your terminal and run 'git clone https://github.com/KerenSfez/JetPack.git'
+2. Clone this repo: Open your terminal and run 'git clone https://github.com/yosefede06/shibexgame.git'
 
 3. Run the index.html file on any of your browsers
 
