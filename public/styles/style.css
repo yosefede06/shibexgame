@@ -17,7 +17,6 @@ body button {
   box-shadow: none;
   border-radius: 5px;
   margin-bottom: 20px;
-
   display: none;
 }
 
@@ -34,6 +33,8 @@ body button {
   transition-duration: 4s;
   position: absolute;
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
 #table-div{
@@ -44,5 +45,30 @@ body button {
   transform: translate(-50%, -50%);
   width: 900px;
   height: 400px;
+}
+
+
+#loaderContainer{
+  position: absolute;
+  padding-top: 15px;
+  bottom: 35%;
+  left: 41.5%;
+  background: rgb(157, 152, 152, 0.8);
+  border: 1px groove black;
+  border-radius: 5%;
+  width: 225px;
+  height: 150px;
+  z-index: 9000;
+  opacity: 0;
+}
+
+#loaderContainer img{
+  width: 100px;
+  height: 100px;
+}
+
+#loaderContainer h3{
+  font-family: monospace;
+  color: white;
 }
 

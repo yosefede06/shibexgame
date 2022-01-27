@@ -1,13 +1,23 @@
 class Arena {
     constructor(name, price, price_draw, capacity, button, bgImage, gctx) {
+        this.players = undefined
         this.name = name
         this.capacity = capacity
         this.price = price;
+        this.price_dollar = undefined;
         this.price_draw = price_draw
         this.playersIn = undefined
         this.button = button
         this.bgImage = bgImage
         this.gctx = gctx // gamecontext
+    }
+
+
+    async get_price(price){
+        const Value = Moralis.Object.extend("Price")
+        const query = new Moralis.Query(Value);
+        let obj = await query.first()
+        this.price_dollar = Math.round(obj.get("price") * Math.round(parseInt(price)) * 100) / 100
     }
 
     async getWinning(){
