@@ -16,6 +16,7 @@ class Button {
         }
 
         this.imgHovering = imgHovering;
+        this.mouse = undefined
         this.fn = fn;
         this.fn_args = fn_args;
     }

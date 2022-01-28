@@ -48,27 +48,27 @@ body button {
 }
 
 
-#loaderContainer{
-  position: absolute;
-  padding-top: 15px;
-  bottom: 35%;
-  left: 41.5%;
-  background: rgb(157, 152, 152, 0.8);
-  border: 1px groove black;
-  border-radius: 5%;
-  width: 225px;
-  height: 150px;
-  z-index: 9000;
-  opacity: 0;
-}
+/*#loaderContainer{*/
+/*  position: absolute;*/
+/*  padding-top: 15px;*/
+/*  bottom: 35%;*/
+/*  left: 41.5%;*/
+/*  background: rgb(157, 152, 152, 0.8);*/
+/*  border: 1px groove black;*/
+/*  border-radius: 5%;*/
+/*  width: 225px;*/
+/*  height: 150px;*/
+/*  z-index: 9000;*/
+/*  opacity: 0;*/
+/*}*/
 
-#loaderContainer img{
-  width: 100px;
-  height: 100px;
-}
+/*#loaderContainer img{*/
+/*  width: 100px;*/
+/*  height: 100px;*/
+/*}*/
 
-#loaderContainer h3{
-  font-family: monospace;
-  color: white;
-}
+/*#loaderContainer h3{*/
+/*  font-family: monospace;*/
+/*  color: white;*/
+/*}*/
 

@@ -320,7 +320,7 @@ const Game = {
             this.createCoins()
             this.createWalker()
             this.createCar()
-        }, 1500)
+        }, 7000)
 
     },
 
@@ -1076,9 +1076,8 @@ const Game = {
 
     async drawMenuBackground(){
         this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
-
-        // draw tool bar
         this.toolbar.draw()
+
         // this.ctx.drawImage(this.toolbar.imageInstance, 0, 120, this.toolbar.width, this.toolbar.height, 300, 0, this.toolbar.width/2, this.toolbar.height/2)
 
         // draw each buttons
@@ -1102,7 +1101,6 @@ const Game = {
             const priceDollar = `${elem.price_dollar} $`
             const priceToDraw = `${price} SHIBX =`
             this.ctx.font = 'italic bold 30px arial,serif'
-            this.ctx.fillStyle = 'orange'
             this.ctx.lineWidth = 1
 
             // getting the number of player in the Arena
@@ -1925,6 +1923,9 @@ function help_btn_handler(){
     Game.drawHelpExplanation()
 }
 
+function demo_btn_handler(){
+    Game.start()
+}
 function update_btn_handler(){
     Game.arenas.forEach(elem => {
         elem.playersIn = undefined

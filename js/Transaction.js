@@ -26,7 +26,7 @@ class Transaction {
             contractAddress: this.contract,
             awaitReceipt: false
         }
-        Game.transaction.show_loader();
+        // Game.transaction.show_loader();
         let result = await Moralis.transfer(options)
         result.on("transactionHash", function (hash) {
             Game.transaction.hash = hash;
@@ -36,9 +36,9 @@ class Transaction {
                 Game.transaction.receipt = transaction;
                 if (Game.transaction.check_data(Game.transaction.value)) {
                     Game.start()
-                    Game.transaction.hide_loader();
+                    // Game.transaction.hide_loader();
                 } else {
-                    Game.transaction.hide_loader();
+                    // Game.transaction.hide_loader();
                     Game.canvas.obejectInDOM.addEventListener('click', checkArena)
                     console.log("error with transaction")
                     throw 'error with transaction'
@@ -46,22 +46,21 @@ class Transaction {
             });
         })
             .on("error", (error) => {
-                Game.transaction.hide_loader();
-                window.alert("transaction denied")
+                // Game.transaction.hide_loader();
                 Game.transaction.transaction_in_proccess = false
                 Game.canvas.obejectInDOM.addEventListener('click', checkArena)
             });
     }
 
-    show_loader() {
-        var loader = document.getElementById('loaderContainer');
-        loader.style = 'opacity: 9;';
-    }
-
-    hide_loader() {
-        var loader = document.getElementById('loaderContainer');
-        loader.style = 'opacity: 0;';
-    }
+    // show_loader() {
+    //     var loader = document.getElementById('loaderContainer');
+    //     loader.style = 'opacity: 9;';
+    // }
+    //
+    // hide_loader() {
+    //     var loader = document.getElementById('loaderContainer');
+    //     loader.style = 'opacity: 0;';
+    // }
 
 
     check_data(price) {
