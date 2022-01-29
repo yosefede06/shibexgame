@@ -112,7 +112,7 @@ const Game = {
     },
 
     lasers: [],
-
+    buttons_play: [],
     coins: [],
     coinsRowAmount: 10,
     coinsCreationTime: 5,  // Seconds
@@ -185,7 +185,7 @@ const Game = {
         this.background.menu  = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'menu', this)
         this.background.game_explanation  = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'game_explanation', this)
         this.background.help = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'help', this)
-
+        this.background.play = new Background(this.canvas, this.ctx, this.canvas.size.height, this.time.FPS, 'help', this)
 
 
         // Set random creation times
@@ -263,6 +263,7 @@ const Game = {
 
     },
 
+
     startMenu()
     {
         this.arenaMenu()
@@ -287,6 +288,7 @@ const Game = {
         var button2 = new Button( 430, 310, 100, 130, this,'images/btn_ice.png', 'images/tmp_button.png')
         var button3 = new Button(740, 310, 100, 130, this,'images/btn_desierto.png', 'images/tmp_button.png')
         var button4 = new Button(1045, 310, 100, 130, this,'images/btn_night.png', 'images/tmp_button.png')
+        this.buttons_play = [button1, button2, button3, button4]
         this.arenas.push(new Arena('Lava','10000.000001', "10K", 3 , button1, 'images/bgVolcan.jpg', this))
         this.arenas.push(new Arena('Ice','20000.000001', "20K", 3, button2, 'images/ice.jpg', this))
         this.arenas.push(new Arena('Desert','50000.000001', "50K", 3, button3, 'images/new_desert.png', this))
@@ -320,7 +322,7 @@ const Game = {
             this.createCoins()
             this.createWalker()
             this.createCar()
-        }, 7000)
+        }, 5000)
 
     },
 
@@ -1078,6 +1080,7 @@ const Game = {
         this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
         this.toolbar.draw()
 
+
         // this.ctx.drawImage(this.toolbar.imageInstance, 0, 120, this.toolbar.width, this.toolbar.height, 300, 0, this.toolbar.width/2, this.toolbar.height/2)
 
         // draw each buttons
@@ -1112,73 +1115,73 @@ const Game = {
         if(this.inArenaMenu){
             if (elem.name === "Lava"){
                 this.ctx.fillStyle = "#7b0c08";
-                this.ctx.fillRect(x - 100, y + height  - 345, 280, 40);
+                this.ctx.fillRect(x - 100, y + height  - 345 + 50, 280, 40);
                 // this.ctx.fillStyle = "#ee3900";
                 // this.ctx.fillRect(x - 20, y + height - 200, 100, 40);
 
                 this.ctx.fillStyle = "#ffe348";
                 this.ctx.fillText(countToDraw, x, y + height  - 150)
                 this.ctx.strokeText(countToDraw, x, y + height  - 150)
-                this.ctx.fillText(priceToDraw, x - 90, y + height - 315)
-                this.ctx.strokeText(priceToDraw, x - 90, y + height - 315)
+                this.ctx.fillText(priceToDraw, x - 90, y + height - 315 + 50)
+                this.ctx.strokeText(priceToDraw, x - 90, y + height - 315 + 50)
             //
 
             //
 
-                this.ctx.fillText(priceDollar, x + 100, y + height - 315)
-                this.ctx.strokeText(priceDollar, x + 100, y + height - 315)
+                this.ctx.fillText(priceDollar, x + 100, y + height - 315 + 50)
+                this.ctx.strokeText(priceDollar, x + 100, y + height - 315 + 50)
             //
 
             }
             if (elem.name === 'Ice'){
                 this.ctx.fillStyle = "#93dcf8";
-                this.ctx.fillRect(x - 100, y + height  - 345, 280, 40);
+                this.ctx.fillRect(x - 100, y + height  - 345 + 50, 280, 40 );
 
                 this.ctx.fillStyle = "#116589";
                 this.ctx.fillText(countToDraw, x + 10, y + height  - 150)
                 this.ctx.strokeText(countToDraw, x + 10, y + height  - 150)
-                this.ctx.fillText(priceToDraw, x - 90, y + height - 315)
-                this.ctx.strokeText(priceToDraw, x - 90, y + height - 315)
+                this.ctx.fillText(priceToDraw, x - 90, y + height - 315 + 50)
+                this.ctx.strokeText(priceToDraw, x - 90, y + height - 315 + 50)
                 //
 
                 //
 
-                this.ctx.fillText(priceDollar, x + 100, y + height - 315)
-                this.ctx.strokeText(priceDollar, x + 100, y + height - 315)
+                this.ctx.fillText(priceDollar, x + 100, y + height - 315 + 50)
+                this.ctx.strokeText(priceDollar, x + 100, y + height - 315 + 50)
             }
             if (elem.name === 'Desert'){
                 //
                 this.ctx.fillStyle = "#fcab43";
-                this.ctx.fillRect(x - 100, y + height  - 345, 280, 40);
+                this.ctx.fillRect(x - 100, y + height  - 345 + 50, 280, 40);
 
                 this.ctx.fillStyle = "#1f7b07";
-                this.ctx.fillText(countToDraw, x + 15, y + height  - 150)
+                this.ctx.fillText(countToDraw, x + 15, y + height  - 150 )
                 this.ctx.strokeText(countToDraw, x + 15, y + height  - 150)
-                this.ctx.fillText(priceToDraw, x - 90, y + height  - 315)
-                this.ctx.strokeText(priceToDraw, x - 90, y + height - 315)
+                this.ctx.fillText(priceToDraw, x - 90, y + height  - 315 + 50)
+                this.ctx.strokeText(priceToDraw, x - 90, y + height - 315 + 50)
                 //
 
                 //
 
-                this.ctx.fillText(priceDollar, x + 100, y + height - 315)
-                this.ctx.strokeText(priceDollar, x + 100, y + height - 315)
+                this.ctx.fillText(priceDollar, x + 100, y + height - 315 + 50)
+                this.ctx.strokeText(priceDollar, x + 100, y + height - 315 + 50)
             }
             if (elem.name === 'Night'){
                 //
                 this.ctx.fillStyle = '#330448';
-                this.ctx.fillRect(x - 95, y + height  - 347, 300, 40);
+                this.ctx.fillRect(x - 95, y + height  - 347 + 50, 300, 40);
 
                 this.ctx.fillStyle = '#fdc655';
                 this.ctx.fillText(countToDraw, x + 20, y + height  - 150)
                 this.ctx.strokeText(countToDraw, x + 20, y + height  - 150)
-                this.ctx.fillText(priceToDraw, x - 90, y + height  - 315)
-                this.ctx.strokeText(priceToDraw, x - 90, y + height - 315)
+                this.ctx.fillText(priceToDraw, x - 90, y + height  - 315 + 50)
+                this.ctx.strokeText(priceToDraw, x - 90, y + height - 315 + 50)
                 //
 
                 //
 
-                this.ctx.fillText(priceDollar, x + 120, y + height - 315)
-                this.ctx.strokeText(priceDollar, x + 120, y + height - 315)
+                this.ctx.fillText(priceDollar, x + 120, y + height - 315 + 50)
+                this.ctx.strokeText(priceDollar, x + 120, y + height - 315 + 50)
             }
 
         }
@@ -1215,8 +1218,6 @@ const Game = {
             this.ctx.drawImage(this.background.initial.imageInstance, 0, 0, this.canvas.size.width, this.canvas.size.height)
 
         }
-
-
     },
 
     drawLoadingScreen() {

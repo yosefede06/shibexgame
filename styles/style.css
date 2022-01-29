@@ -25,6 +25,7 @@ body button {
   height: 702px;
   position: relative;
   margin: auto;
+
 }
 
 #my-canvas{
@@ -46,6 +47,9 @@ body button {
   width: 900px;
   height: 400px;
 }
+
+
+
 
 
 /*#loaderContainer{*/

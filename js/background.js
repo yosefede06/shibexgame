@@ -4,10 +4,10 @@ const imageInitialBackGround = './images/initialBackgroundShibex.png';
 const imageGameOver = './images/gameoverShibex.png';
 const imageClosureIronUpYellow = './images/shibexUp.png';
 const imageClosureIronDownYellow = './images/shibexDown.png';
-const imageMenuBackground = './images/arenabg2.png'
+const imageMenuBackground = './images/arenabg.png'
 const imageGameExplanation = './images/game_explanation.jpeg'
 const imageHelp = './images/help.png'
-
+const imagePlay = "/images/play.png"
 // Types of Background
 const presentation_down = 'iron-down';
 const presentation_up = 'iron-up';
@@ -18,7 +18,6 @@ const closeState = 'close';
 const menu = 'menu';
 const game_explanation = 'game_explanation';
 const help = 'help'
-
 
 class Background {
 
