@@ -1,5 +1,6 @@
 body {
   text-align: center;
+  background-image: url("/images/night.jpg");
 
 }
 
@@ -28,6 +29,7 @@ body button {
 
 }
 
+
 #my-canvas{
   opacity: 0;
   transition: all;
@@ -37,6 +39,7 @@ body button {
   width: 100%;
   height: 100%;
 }
+
 
 #table-div{
   position: absolute;

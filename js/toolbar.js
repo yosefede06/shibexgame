@@ -10,14 +10,14 @@ class Toolbar {
 
         //create all buttons
 
-        this.ranking_btn = new Button(430, 35, 40, 40, this.gctx, './images/rank_btn.png', undefined, ranking_btn_handler)
-        this.iotex_btn = new Button(500, 35, 40, 40, this.gctx, './images/iotex_btn.png', undefined, iotex_btn_handler)
-        this.full_screen_btn = new Button(560, 35, 40, 40, this.gctx, './images/full_screen_btn.png', undefined, full_screen_handler)
-        this.update_btn = new Button(630, 35, 40, 40, this.gctx, './images/update_btn.png', undefined, update_btn_handler)
-        this.login_btn = new Button(700, 35, 40,40, this.gctx, './images/login_btn.png', undefined, login)
-        this.rules_btn = new Button(770, 35, 40,40, this.gctx, './images/rules_btn.png', undefined, rules_btn_handler)
-        this.help_btn = new Button(840, 35, 40,40, this.gctx, './images/help_btn.png', undefined, help_btn_handler)
-        this.play_btn = new Button( 270, 480, this.width/2 - 60, this.height/2, this.gctx, './images/play.png', undefined, demo_btn_handler)
+        this.ranking_btn = new Button(430, 45, 40, 40, this.gctx, './images/rank_btn.png', undefined, ranking_btn_handler)
+        this.iotex_btn = new Button(500, 45, 40, 40, this.gctx, './images/iotex_btn.png', undefined, iotex_btn_handler)
+        this.full_screen_btn = new Button(560, 45, 40, 40, this.gctx, './images/full_screen_btn.png', undefined, full_screen_handler)
+        this.update_btn = new Button(630, 45, 40, 40, this.gctx, './images/update_btn.png', undefined, update_btn_handler)
+        this.login_btn = new Button(700, 45, 40,40, this.gctx, './images/login_btn.png', undefined, login)
+        this.rules_btn = new Button(770, 45, 40,40, this.gctx, './images/rules_btn.png', undefined, rules_btn_handler)
+        this.help_btn = new Button(840, 45, 40,40, this.gctx, './images/help_btn.png', undefined, help_btn_handler)
+        this.play_btn = new Button( 290, 480, this.width/2 - 200, this.height/2, this.gctx, '/images/play-new.png', undefined, demo_btn_handler)
 
         //push it into the list
 
@@ -33,14 +33,14 @@ class Toolbar {
     draw()
     {
         // this.ctx.drawImage(this.toolbar.imageInstance, 0, 120, this.toolbar.width, this.toolbar.height, 300, 0, this.toolbar.width/2, this.toolbar.height/2)
-        this.gctx.ctx.drawImage(this.ranking_btn.imageInstance, 0, 120, this.width, this.height, 400, 0, this.width/2, this.height/2)
-        this.gctx.ctx.drawImage(this.iotex_btn.imageInstance, 0, 120, this.width, this.height, 400, 0, this.width/2, this.height/2)
-        this.gctx.ctx.drawImage(this.full_screen_btn.imageInstance, 0, 120, this.width, this.height, 400, 0, this.width/2, this.height/2)
-        this.gctx.ctx.drawImage(this.update_btn.imageInstance, 30, 120, this.width, this.height, 400, 0, this.width/2, this.height/2)
-        this.gctx.ctx.drawImage(this.login_btn.imageInstance, 30, 120, this.width, this.height, 400, 0, this.width/2, this.height/2)
-        this.gctx.ctx.drawImage(this.rules_btn.imageInstance, 30, 120, this.width, this.height, 400, 0, this.width/2, this.height/2)
-        this.gctx.ctx.drawImage(this.help_btn.imageInstance, 330, 120, this.width, this.height, 400, 0, this.width/2, this.height/2)
-        this.gctx.ctx.drawImage(this.play_btn.imageInstance, 270, 480, this.width/2 - 60, this.height/2)
+        this.gctx.ctx.drawImage(this.ranking_btn.imageInstance, 0, 90, this.width, this.height, 400, 0, this.width/2, this.height/2)
+        this.gctx.ctx.drawImage(this.iotex_btn.imageInstance, 0, 90, this.width, this.height, 400, 0, this.width/2, this.height/2)
+        this.gctx.ctx.drawImage(this.full_screen_btn.imageInstance, 0, 90, this.width, this.height, 400, 0, this.width/2, this.height/2)
+        this.gctx.ctx.drawImage(this.update_btn.imageInstance, 30, 90, this.width, this.height, 400, 0, this.width/2, this.height/2)
+        this.gctx.ctx.drawImage(this.login_btn.imageInstance, 30, 90, this.width, this.height, 400, 0, this.width/2, this.height/2)
+        this.gctx.ctx.drawImage(this.rules_btn.imageInstance, 30, 90, this.width, this.height, 400, 0, this.width/2, this.height/2)
+        this.gctx.ctx.drawImage(this.help_btn.imageInstance, 330, 90, this.width, this.height, 400, 0, this.width/2, this.height/2)
+        this.gctx.ctx.drawImage(this.play_btn.imageInstance, 290, 480, this.width/2 - 100, this.height/2)
 
         // this.draw_play()
         this.draw_layer()
@@ -48,7 +48,7 @@ class Toolbar {
 
     }
     draw_layer(){
-        this.layer = this.gctx.ctx.roundRect(360, 15, 550, 70, 20) //or .fill()
+        this.layer = this.gctx.ctx.roundRect(360, 35, 550, 70, 20) //or .fill()
         this.layer.fillStyle =  "rgba(239,232,232,0.36)"
         // "rgba(239,232,232,0.36)"
         // "rgba(45,43,63,0.33)"
