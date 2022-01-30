@@ -3,7 +3,40 @@ body {
   background-image: url("/images/night.jpg");
 
 }
-
+@media only screen and (orientation:portrait) {
+  body {
+    height: 400vw;
+    width: 390vw;
+    transform: rotate(-90deg);
+  }
+}
+/*  #my-canvas{*/
+/*    height: 100vw;*/
+/*    opacity: 0;*/
+/*    transition: all;*/
+/*    transition-duration: 4s;*/
+/*    position: center;*/
+/*    display: block;*/
+/*    !*width: 100%;*!*/
+/*    !*height: 100%;*!*/
+/*    transform: rotate(-90deg);*/
+/*  }*/
+/*  #game-board{*/
+/*    width: 1264px;*/
+/*    height: 802px;*/
+/*  }*/
+/*}*/
+/*@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {*/
+/*  #game-board {*/
+/*    transform: rotate(-90deg);*/
+/*    transform-origin: left top;*/
+/*    width: 100vh;*/
+/*    overflow-x: hidden;*/
+/*    position: absolute;*/
+/*    top: 100%;*/
+/*    left: 0;*/
+/*  }*/
+/*}*/
 body h1 {
   font-size: 30px;
   text-transform: uppercase;
