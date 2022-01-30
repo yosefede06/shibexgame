@@ -49,7 +49,8 @@ class Toolbar {
     }
     draw_layer(){
         this.layer = this.gctx.ctx.roundRect(360, 35, 550, 70, 20) //or .fill()
-        this.layer.fillStyle =  "rgba(239,232,232,0.36)"
+        // this.layer.fillStyle =  "rgba(239,232,232,0.36)"
+        this.layer.fillStyle = "rgba(175,238,253,0.32)"
         // "rgba(239,232,232,0.36)"
         // "rgba(45,43,63,0.33)"
         this.layer.fill();
