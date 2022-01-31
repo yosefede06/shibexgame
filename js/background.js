@@ -4,7 +4,7 @@ const imageInitialBackGround = './images/initialBackgroundShibex.png';
 const imageGameOver = './images/gameoverShibex.png';
 const imageClosureIronUpYellow = './images/shibexUp.png';
 const imageClosureIronDownYellow = './images/shibexDown.png';
-const imageMenuBackground = './images/principal-.png'
+const imageMenuBackground = './images/principal-short.png'
 const imageGameExplanation = './images/game_explanation.jpeg'
 const imageHelp = './images/help.png'
 

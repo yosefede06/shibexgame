@@ -1,14 +1,28 @@
 body {
   text-align: center;
   background-image: url("/images/night.jpg");
+/*, url("/images/night.jpg")*/
+  background-repeat: no-repeat;
+  /*background-attachment: fixed;*/
+  background-position:  44% 26%;
+
+
 
 }
 @media only screen and (orientation:portrait) {
   body {
     height: 400vw;
-    width: 390vw;
+    width: 490vw;
     transform: rotate(-90deg);
+    overflow-x: hidden;
   }
+  /*body {*/
+  /*  height: 400vw;*/
+  /*  width: 490vw;*/
+  /*  transform: rotate(-90deg);*/
+  /*  */
+  /*}*/
+
 }
 /*  #my-canvas{*/
 /*    height: 100vw;*/

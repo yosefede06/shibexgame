@@ -1102,8 +1102,8 @@ const Game = {
             const height = button.height
             const price = elem.price_draw
             const priceDollar = `${elem.price_dollar} $`
-            const priceToDraw = `${price} SHIBX =`
-            this.ctx.font = 'italic bold 25px arial,serif'
+            const priceToDraw = `${price} =`
+            this.ctx.font = 'italic bold 15px arial,serif'
             this.ctx.lineWidth = 1
 
             // getting the number of player in the Arena
@@ -1113,19 +1113,20 @@ const Game = {
             const countToDraw = `${elem.playersIn} / ${elem.capacity}`
 
         if(this.inArenaMenu){
-            const counter_y = y + height  - 225
-            const counter_x = x + 20
+            this.ctx.fillStyle = "rgb(255,255,255)";
+            this.ctx.strokeStyle = this.ctx.fillStyle
+            const counter_y = y + height  - 190
+            const counter_x = x - 75
             const txt_y = y + height  - 170
-            const txt_x = x - 75
-            const dollar_x =  160
+            const txt_x = x - 15
+            const dollar_x =  82
             if (elem.name === "Lava"){
-                // this.ctx.fillStyle = "#7b0c08";
                 // this.ctx.fillRect(x - 100, y + height  - 345 + 50, 280, 40);
 
-                this.ctx.fillStyle = "#ffe348";
-                this.ctx.fillText(countToDraw, counter_x - 5, counter_y)
-                this.ctx.strokeText(countToDraw, counter_x - 5, counter_y)
-
+                // this.ctx.fillStyle = "#ffe348";
+                this.ctx.fillText(countToDraw, counter_x - 7, counter_y)
+                this.ctx.strokeText(countToDraw, counter_x - 7, counter_y)
+                this.ctx.font = 'italic bold 27px arial,serif'
                 this.ctx.fillText(priceToDraw, txt_x, txt_y)
                 this.ctx.strokeText(priceToDraw, txt_x, txt_y)
 
@@ -1135,28 +1136,32 @@ const Game = {
 
             }
             if (elem.name === 'Ice'){
+                const plus = 15
+
                 // this.ctx.fillStyle = "#93dcf8";
                 // this.ctx.fillRect(x - 100, y + height  - 345 + 50, 280, 40 );
 
-                this.ctx.fillStyle = "#116589";
-                this.ctx.fillText(countToDraw, counter_x, counter_y)
-                this.ctx.strokeText(countToDraw, counter_x, counter_y)
-                this.ctx.fillText(priceToDraw, txt_x, txt_y)
-                this.ctx.strokeText(priceToDraw, txt_x, txt_y)
+                // this.ctx.fillStyle = "#116589";
+                this.ctx.fillText(countToDraw, counter_x + 12, counter_y)
+                this.ctx.strokeText(countToDraw, counter_x + 12, counter_y)
+                this.ctx.font = 'italic bold 27px arial,serif'
+                this.ctx.fillText(priceToDraw, txt_x + plus, txt_y)
+                this.ctx.strokeText(priceToDraw, txt_x + plus, txt_y)
                 //
 
                 //
 
-                this.ctx.fillText(priceDollar, txt_x + dollar_x, txt_y)
-                this.ctx.strokeText(priceDollar, txt_x + dollar_x, txt_y)
+                this.ctx.fillText(priceDollar, txt_x + dollar_x + plus, txt_y)
+                this.ctx.strokeText(priceDollar, txt_x + dollar_x + plus, txt_y)
             }
             if (elem.name === 'Desert'){
                 // this.ctx.fillStyle = "#fcab43";
                 // this.ctx.fillRect(x - 100, y + height  - 345 + 50, 280, 40);
 
-                this.ctx.fillStyle = "#1f7b07";
-                this.ctx.fillText(countToDraw, counter_x, counter_y )
-                this.ctx.strokeText(countToDraw, counter_x, counter_y)
+                // this.ctx.fillStyle = "#1f7b07";
+                this.ctx.fillText(countToDraw, counter_x +2, counter_y )
+                this.ctx.strokeText(countToDraw, counter_x + 2, counter_y)
+                this.ctx.font = 'italic bold 27px arial,serif'
                 this.ctx.fillText(priceToDraw, txt_x, txt_y)
                 this.ctx.strokeText(priceToDraw, txt_x, txt_y)
 
@@ -1168,11 +1173,12 @@ const Game = {
                 // this.ctx.fillRect(x - 95, y + height  - 347 + 50, 300, 40);
 
                 // this.ctx.fillStyle = 'rgb(224,201,238)';
-                this.ctx.fillStyle = '#f2defe';
-                this.ctx.fillText(countToDraw, counter_x, counter_y)
-                this.ctx.strokeText(countToDraw, counter_x, counter_y)
-                this.ctx.fillText(priceToDraw, txt_x, txt_y)
-                this.ctx.strokeText(priceToDraw, txt_x, txt_y)
+                // this.ctx.fillStyle = '#f2defe';
+                this.ctx.fillText(countToDraw, counter_x -2, counter_y)
+                this.ctx.strokeText(countToDraw, counter_x-2, counter_y)
+                this.ctx.font = 'italic bold 27px arial,serif'
+                this.ctx.fillText(priceToDraw, txt_x - 5, txt_y)
+                this.ctx.strokeText(priceToDraw, txt_x - 5, txt_y)
 
                 this.ctx.fillText(priceDollar, txt_x + dollar_x + 10, txt_y)
                 this.ctx.strokeText(priceDollar, txt_x + dollar_x + 10, txt_y)
