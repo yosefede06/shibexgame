@@ -1460,13 +1460,17 @@ const Game = {
     },
 
     drawScore() {
-
+        this.ctx.font = 'italic bold 25px arial,serif'
+        this.ctx.fillStyle = '#53d2fc'
+        this.ctx.strokeStyle = '#05426c'
         // We draw distance
         const distanceToDraw = `${Math.floor(this.distanceDone)}M`
 
-        this.ctx.font = 'italic bold 25px arial,serif'
-        this.ctx.fillStyle = 'orange'
+
         this.ctx.fillText(distanceToDraw, 20, 50)
+        this.board = new Image()
+        this.board.src = "./images/arenasdiv.png"
+        this.ctx.drawImage(this.board, -5, 0, 896 * 0.25, 403 * 0.35)
         this.ctx.lineWidth = 2
         this.ctx.strokeText(distanceToDraw, 20, 50)
 
@@ -1483,6 +1487,9 @@ const Game = {
         this.ctx.fillText(scoreToDraw, 20, 110)
         this.ctx.strokeText(scoreToDraw, 20, 110)
         if (this.player.isDead){
+
+            this.ctx.drawImage(this.board, 270, 310, 896 * 0.72, 403 * 0.35)
+
             const score = Math.floor(this.distanceDone) + 5 * this.collectedCoins
             const scoreToDraw = `YOUR FINAL SCORE IS: ${score}`
             this.ctx.font = 'italic bold 40px arial, serif'

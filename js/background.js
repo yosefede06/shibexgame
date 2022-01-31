@@ -1,5 +1,5 @@
 // Images of Background
-const imageBackGround = './images/heroes-back.png';
+const imageBackGround = './images/bgVolcan.jpg';
 const imageInitialBackGround = './images/initialBackgroundShibex.png';
 const imageGameOver = './images/gameoverShibex.png';
 const imageClosureIronUpYellow = './images/shibexUp.png';
