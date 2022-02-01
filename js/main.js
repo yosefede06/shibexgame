@@ -1649,7 +1649,9 @@ const Game = {
 
     gameOver() {
         //SAVE DATA
-        save_data(this.transaction.hash)
+        if(this.transaction.hash){
+            save_data(this.transaction.hash)
+        }
         this.activateGameOver=true
 
         setTimeout(() => {
@@ -1907,6 +1909,7 @@ function checkToolbarHover(event){
 
 
 async function save_data(hash){
+    try{
         const eth_address = Game.user.get("ethAddress");
         const object = Moralis.Object.extend(Game.transaction.arena)
         Game.player_data = new object()
@@ -1916,7 +1919,10 @@ async function save_data(hash){
         Game.player_data.set("hash", hash)
         Game.transaction = new Transaction()
         await Game.player_data.save(null, {useMasterKey:true})
-
+    }
+    catch(e){
+        console.log("error save_data")
+    }
 }
 
 async function get_winning(){
