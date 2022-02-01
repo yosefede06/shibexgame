@@ -111,7 +111,7 @@ class Warning {
 
     shootRocket() {
         //bug of the rocket adding to the rocket list when the player is already dead
-        if (!this.gameContext.isGameOver && !this.gameContext.isPlaying) {
+        if (!this.gameContext.isGameOver && this.gameContext.isPlaying) {
             setTimeout(() => {
                 this.gameContext.createRocket(this)
                 this.gameContext.audio.tracks.rocketSong.play()
