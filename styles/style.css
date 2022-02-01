@@ -1,128 +1,173 @@
 body {
-  text-align: center;
-  background-image: url("/images/night.jpg");
-/*, url("/images/night.jpg")*/
-  background-repeat: no-repeat;
-  /*background-attachment: fixed;*/
-  background-position:  44% 26%;
-
-
-
-}
-@media only screen and (orientation:portrait) {
-  body {
-    height: 400vw;
-    width: 490vw;
-    transform: rotate(-90deg);
-    overflow-x: hidden;
+    width: 100vw;
+    height: 100vh;
+      text-align: center;
+      background-image: url("/images/night.jpg");
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
   }
-  /*body {*/
-  /*  height: 400vw;*/
-  /*  width: 490vw;*/
-  /*  transform: rotate(-90deg);*/
-  /*  */
-  /*}*/
-
-}
-/*  #my-canvas{*/
-/*    height: 100vw;*/
-/*    opacity: 0;*/
-/*    transition: all;*/
-/*    transition-duration: 4s;*/
-/*    position: center;*/
-/*    display: block;*/
-/*    !*width: 100%;*!*/
-/*    !*height: 100%;*!*/
-/*    transform: rotate(-90deg);*/
-/*  }*/
-/*  #game-board{*/
-/*    width: 1264px;*/
-/*    height: 802px;*/
-/*  }*/
-/*}*/
-/*@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {*/
-/*  #game-board {*/
-/*    transform: rotate(-90deg);*/
-/*    transform-origin: left top;*/
-/*    width: 100vh;*/
-/*    overflow-x: hidden;*/
-/*    position: absolute;*/
-/*    top: 100%;*/
-/*    left: 0;*/
-/*  }*/
-/*}*/
-body h1 {
-  font-size: 30px;
-  text-transform: uppercase;
-}
-
-body button {
-  font-size: 20px;
-  background-color: black;
-  color: #fff;
-  padding: 10px 20px;
-  border: 0;
-  box-shadow: none;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  display: none;
-}
-
-#game-board{
-  width: 1264px;
-  height: 702px;
-  position: relative;
-  margin: auto;
-
-}
-
-
-#my-canvas{
-  opacity: 0;
-  transition: all;
-  transition-duration: 4s;
-  position: absolute;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-
-#table-div{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  width: 900px;
-  height: 400px;
-}
-
-
-
-
-
-/*#loaderContainer{*/
-/*  position: absolute;*/
-/*  padding-top: 15px;*/
-/*  bottom: 35%;*/
-/*  left: 41.5%;*/
-/*  background: rgb(157, 152, 152, 0.8);*/
-/*  border: 1px groove black;*/
-/*  border-radius: 5%;*/
-/*  width: 225px;*/
-/*  height: 150px;*/
-/*  z-index: 9000;*/
-/*  opacity: 0;*/
-/*}*/
-
-/*#loaderContainer img{*/
-/*  width: 100px;*/
-/*  height: 100px;*/
-/*}*/
-
-/*#loaderContainer h3{*/
-/*  font-family: monospace;*/
-/*  color: white;*/
-/*}*/
-
+  
+  body h1 {
+      font-size: 30px;
+      text-transform: uppercase;
+  }
+  
+  body button {
+      font-size: 20px;
+      background-color: black;
+      color: #fff;
+      padding: 10px 20px;
+      border: 0;
+      box-shadow: none;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      display: none;
+  }
+  
+  #game-board {
+      width: 1612px;
+      height: 726px;
+      position: relative;
+      margin: 0;
+      padding: 0;
+      /* margin-top: 55px; */
+  }
+  
+  #my-canvas {
+      padding: 0;
+      margin: auto;
+      opacity: 0;
+      transition: all;
+      transition-duration: 4s;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+  }
+  
+  #table-div {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      width: 900px;
+      height: 400px;
+  }
+  
+  @media only screen and (max-width: 1700px){
+    #game-board{
+      width: 1300px;
+      height: 540px;
+    }
+  
+  }
+  
+  
+  @media only screen and (max-width: 1370px){
+    #game-board{
+      width: 1100px;
+      height: 400px;
+    }
+  
+  }
+  
+  
+  @media only screen and (max-width: 1200px){
+    #game-board{
+      width: 900px;
+    }
+  
+  }
+  
+  @media only screen and (max-width: 900px){
+    #game-board{
+      width: 700px;
+      height: 300px;
+    }
+  
+  }
+  
+  @media only screen and (max-width: 640px){
+    #game-board{
+      width: 400px;
+      height: 170px;
+      /* margin-top: 15px; */
+      
+    }
+  
+  }
+  
+  @media only screen and (max-width: 460px){
+    #game-board{
+      width: 400px;
+      height: 170px;
+    }
+  
+  }
+  
+  
+  @media only screen and (max-width: 320px){
+    #game-board{
+      width: 300px;
+      height: 570px;
+    }
+    
+  }
+  /* @media only screen and (max-height  : 1200px){
+    #game-board{
+      height: 384px;
+      margin-top: 15px;
+    }
+  
+  } */
+  
+  @media only screen and (max-height  : 720px){
+    #game-board{
+      height: 650px;
+      /* margin-top: 15px; */
+    }
+  
+  }
+  
+  @media only screen and (max-height  : 660px){
+    #game-board{
+      height: 200px;
+      /* margin-top: 200px; */
+    }
+  }
+  
+  @media only screen and (max-width  : 380px) and (max-height  : 675px){
+    #game-board{
+      height: 170px;
+      /* margin-top: 200px; */
+    }
+  }
+  
+  @media only screen and (max-width  : 430px) and (max-height  : 935px){
+    #game-board{
+      height: 170px;
+      /* margin-top: 300px; */
+    }
+  }
+  
+  /* Galaxy S10 */
+  @media only screen and (max-width  : 330px) and (max-height  : 670px){
+    #game-board{
+      width: 300px;
+      height: 128px;
+      /* margin-top: 300px; */
+    }
+  }
+  
+  
+  
+  
