@@ -28,10 +28,20 @@ class Toolbar {
     }
 
     async draw() {
-        this.gctx.ctx.drawImage(this.ranking_btn.imageInstance, 410, -120, 896 * 0.7, 403 * 0.7)
-        this.gctx.ctx.drawImage(this.full_screen_btn.imageInstance, 290, -10)
-        this.gctx.ctx.drawImage(this.update_btn.imageInstance, 290, -50)
-        this.gctx.ctx.drawImage(this.play_btn.imageInstance, 290, 480, this.width / 2 - 100, this.height / 2)
+        // Mobile positioning
+        if (screen.width <= 600) {
+            this.gctx.ctx.drawImage(this.update_btn.imageInstance, 290, -50)
+            this.gctx.ctx.drawImage(this.full_screen_btn.imageInstance, 290, -10)
+            this.gctx.ctx.drawImage(this.play_btn.imageInstance, screen.width / 6.5 - 50, 370, this.width / 2 - 100, this.height / 2)
+            this.gctx.ctx.drawImage(this.ranking_btn.imageInstance, 410, -120, 896 * 0.7, 403 * 0.7)
+        }
+        // Desktop positioning
+        else {
+            this.gctx.ctx.drawImage(this.update_btn.imageInstance, 290, -50)
+            this.gctx.ctx.drawImage(this.full_screen_btn.imageInstance, 290, -10)
+            this.gctx.ctx.drawImage(this.play_btn.imageInstance, 275, 480, 720, this.height / 2)
+            this.gctx.ctx.drawImage(this.ranking_btn.imageInstance, 410, -120, 896 * 0.7, 403 * 0.7)
+        }
         this.gctx.ctx.drawImage(this.marcoInstance, 0, 100, this.width / 3 - 220, this.height / 1.5)
         this.gctx.ctx.drawImage(this.marcoInstance, 330, 100, this.width / 3 - 220, this.height / 1.5)
         this.gctx.ctx.drawImage(this.marcoInstance, 630, 100, this.width / 3 - 220, this.height / 1.5)
@@ -58,18 +68,18 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
     if (w < 2 * r) r = w / 2;
     if (h < 2 * r) r = h / 2;
     this.beginPath();
-    this.moveTo(x+r, y);
-    this.arcTo(x+w, y,   x+w, y+h, r);
-    this.arcTo(x+w, y+h, x,   y+h, r);
-    this.arcTo(x,   y+h, x,   y,   r);
-    this.arcTo(x,   y,   x+w, y,   r);
+    this.moveTo(x + r, y);
+    this.arcTo(x + w, y, x + w, y + h, r);
+    this.arcTo(x + w, y + h, x, y + h, r);
+    this.arcTo(x, y + h, x, y, r);
+    this.arcTo(x, y, x + w, y, r);
     this.closePath();
     return this;
 }
 
-Toolbar.prototype.onclick = function(mousex, mousey){
+Toolbar.prototype.onclick = function (mousex, mousey) {
     this.buttons.forEach(elem => {
-        if (elem.onclick(mousex, mousey)){
+        if (elem.onclick(mousex, mousey)) {
             elem.fn()
         }
 
@@ -92,27 +102,25 @@ Toolbar.prototype.onclick = function(mousex, mousey){
 //
 // }
 
-Toolbar.prototype.onmouseover = function (mousex, mousey){
+Toolbar.prototype.onmouseover = function (mousex, mousey) {
     document.getElementById('my-canvas').style.cursor = "default";
     this.buttons.forEach(elem => {
         if (elem.onclick(mousex, mousey)) {
-            document.getElementById('my-canvas').style.cursor ="url(https://res.cloudinary.com/shibex/image/upload/c_scale,h_35,w_72/v1643420239/rocketFire_k5vhwq.png), auto"
+            document.getElementById('my-canvas').style.cursor = "url(https://res.cloudinary.com/shibex/image/upload/c_scale,h_35,w_72/v1643420239/rocketFire_k5vhwq.png), auto"
         }
     })
     this.gctx.buttons_play.forEach(elem => {
         if (elem.onclick(mousex, mousey)) {
-            document.getElementById('my-canvas').style.cursor ="url(https://res.cloudinary.com/shibex/image/upload/c_scale,h_35,w_72/v1643420239/rocketFire_k5vhwq.png), auto"
+            document.getElementById('my-canvas').style.cursor = "url(https://res.cloudinary.com/shibex/image/upload/c_scale,h_35,w_72/v1643420239/rocketFire_k5vhwq.png), auto"
         }
     })
 
-    if(this.play_btn.onclick(mousex, mousey))
-    {
+    if (this.play_btn.onclick(mousex, mousey)) {
         // this.gctx.ctx.strokeStyle = "#0c5073"
         // this.gctx.ctx.stroke(this.demo)
         return true
     }
-    else
-    {
+    else {
         // this.gctx.ctx.strokeStyle = "#000000"
         // this.gctx.ctx.stroke(this.demo)
         return false

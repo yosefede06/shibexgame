@@ -207,8 +207,10 @@ body {
   }
   
   #game-board {
-      width: 1612px;
-      height: 726px;
+    width: 1264px;
+    height: 702px;
+      /* width: 1612px;
+      height: 726px; */
       position: relative;
       margin: 0;
       padding: 0;
@@ -243,8 +245,8 @@ body {
   
   @media only screen and (max-width: 1700px){
     #game-board{
-      width: 1300px;
-      height: 540px;
+      width: 1263px;
+      height: 702px;
     }
   
   }
