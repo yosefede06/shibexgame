@@ -1,3 +1,181 @@
+/* for mobile deviced 480px or lower */
+@media only screen and (orientation: portrait) and (max-width: 480px){
+
+    body {
+        transform: rotate(90deg);
+        width: 100vw;
+        height: 100vh;
+          text-align: center;
+          background-image: url("/images/night.jpg");
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+      
+      body h1 {
+          font-size: 30px;
+          text-transform: uppercase;
+      }
+      
+      body button {
+          font-size: 20px;
+          background-color: black;
+          color: #fff;
+          padding: 10px 20px;
+          border: 0;
+          box-shadow: none;
+          border-radius: 5px;
+          margin-bottom: 20px;
+          display: none;
+      }
+      
+      #game-board {
+          width: 1612px;
+          height: 726px;
+          position: relative;
+          margin: 0;
+          padding: 0;
+          /* margin-top: 55px; */
+      }
+      
+      #my-canvas {
+          padding: 0;
+          margin: auto;
+          opacity: 0;
+          transition: all;
+          transition-duration: 4s;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          display: block;
+          width: 100%;
+          height: 100%;
+      }
+      
+      #table-div {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          width: 900px;
+          height: 400px;
+      }
+      
+      @media only screen and (max-width: 1700px){
+        #game-board{
+          width: 1300px;
+          height: 540px;
+        }
+      
+      }
+      
+      
+      @media only screen and (max-width: 1370px){
+        #game-board{
+          width: 1100px;
+          height: 400px;
+        }
+      
+      }
+      
+      
+      @media only screen and (max-width: 1200px){
+        #game-board{
+          width: 900px;
+        }
+      
+      }
+      
+      @media only screen and (max-width: 900px){
+        #game-board{
+          width: 700px;
+          height: 300px;
+        }
+      
+      }
+      
+      @media only screen and (max-width: 640px){
+        #game-board{
+          width: 400px;
+          height: 170px;
+          /* margin-top: 15px; */
+          
+        }
+      
+      }
+      
+      @media only screen and (max-width: 460px){
+        #game-board{
+          width: 400px;
+          height: 170px;
+        }
+      
+      }
+      
+      
+      @media only screen and (max-width: 320px){
+        #game-board{
+          width: 300px;
+          height: 570px;
+        }
+        
+      }
+      /* @media only screen and (max-height  : 1200px){
+        #game-board{
+          height: 384px;
+          margin-top: 15px;
+        }
+      
+      } */
+      
+      @media only screen and (max-height  : 720px){
+        #game-board{
+          height: 650px;
+          /* margin-top: 15px; */
+        }
+      
+      }
+      
+      @media only screen and (max-height  : 660px){
+        #game-board{
+          height: 200px;
+          /* margin-top: 200px; */
+        }
+      }
+      
+      @media only screen and (max-width  : 380px) and (max-height  : 675px){
+        #game-board{
+          height: 170px;
+          /* margin-top: 200px; */
+        }
+      }
+      
+      @media only screen and (max-width  : 430px) and (max-height  : 935px){
+        #game-board{
+          height: 170px;
+          /* margin-top: 300px; */
+        }
+      }
+      
+      /* Galaxy S10 */
+      @media only screen and (max-width  : 330px) and (max-height  : 670px){
+        #game-board{
+          width: 300px;
+          height: 128px;
+          /* margin-top: 300px; */
+        }
+      }
+      
+}
+
+/* end of mobile view  */
+
 body {
     width: 100vw;
     height: 100vh;
@@ -168,6 +346,7 @@ body {
     }
   }
   
+
   
   
   
