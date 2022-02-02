@@ -2,7 +2,7 @@
 @media only screen and (orientation: portrait) and (max-width: 480px){
 
     body {
-        transform: rotate(90deg);
+        /* transform: rotate(90deg); */
         width: 100vw;
         height: 100vh;
           text-align: center;

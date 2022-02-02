@@ -29,7 +29,7 @@ class Toolbar {
 
     async draw() {
         // Mobile positioning
-        if (screen.width <= 600) {
+        if (screen.width <= 480) {
             this.gctx.ctx.drawImage(this.update_btn.imageInstance, 290, -50)
             this.gctx.ctx.drawImage(this.full_screen_btn.imageInstance, 290, -10)
             this.gctx.ctx.drawImage(this.play_btn.imageInstance, screen.width / 6.5 - 50, 370, this.width / 2 - 100, this.height / 2)
