@@ -1,6 +1,7 @@
 'use strict';
 
-// Force landscape mode
+// Force landscape screen positioning lock. Works only 
+// with full screen mode such as tablets / mobile
 function lockLandscapeDisp(){
     let de = document.documentElement;
     if( de.requestFullscreen) { de.requestFullscreen();}
@@ -8,5 +9,5 @@ function lockLandscapeDisp(){
     else if (de.webkitRequestFullscreen) {de.webkitRequestFullscreen();}
     else if (de.msRequestFullscreen) {de.msRequestFullscreen();}
     screen.orientation.lock('landscape');
-    console.log('lock')
+    console.log('locking screen at portrait mode - only if screen is at "full screen" mode')
 }

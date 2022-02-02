@@ -214,9 +214,8 @@ const Game = {
 
         }
         this.arenaMenu = this.arenaMenu.bind(this)
+        // urig - This click will make user call the portrait screen lock function
         this.canvas.obejectInDOM.addEventListener('click', this.arenaMenu)
-
-
     },
 
     setCanvasDimensions() {
@@ -269,8 +268,10 @@ const Game = {
         this.arenaMenu()
 
     },
+    // urig - I will add here a call to the screen-lock
     arenaMenu()
     {
+        lockLandscapeDisp();
         this.inArenaMenu = true
         this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
         // this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
