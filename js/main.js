@@ -26,8 +26,8 @@ const Game = {
     // Canvas: size of the game window (and background)
     canvas: {
         size: {
-            width: (!window.mobileCheck()) ? (1080 * 1.17) : 700,
-            height: (!window.mobileCheck()) ? (600 * 1.17) : 600
+            width: 1080 * 1.17,
+            height: 600 * 1.17,
         },
         baseLine: baseLine,
         highLine: highLine,
@@ -1086,7 +1086,7 @@ const Game = {
         // draw each buttons
         for (let i = 0; i < this.arenas.length; i++){
             var elm = this.arenas[i].button
-            this.ctx.drawImage(elm.imageInstance, 0, 0, this.canvas.size.width, this.canvas.size.height)
+            this.ctx.drawImage(elm.imageInstance, 0, 90, this.canvas.size.width, (this.canvas.size.width) / 2.4084)
         }
 
         // draw price for each arena

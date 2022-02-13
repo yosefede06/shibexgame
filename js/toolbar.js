@@ -76,6 +76,13 @@ Toolbar.prototype.onclick = function(mousex, mousey){
     })
 }
 
+Toolbar.prototype.ontouchstart= function(mousex, mousey){
+    this.buttons.forEach(elem => {
+        if (elem.ontouchstart(mousex, mousey)){
+            elem.fn()
+        }
+    })
+}
 
 
 //
