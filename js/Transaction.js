@@ -9,9 +9,12 @@ class Transaction {
         this.receiver = "0x6c0C7436A63F8E90Ba4aF3782ace272dDC162BEF";
         this.sender = undefined;
         this.contract = "0x838403e073a79719a0927a16642ca7dcdc642bd5"
+        this.contract_polygon = "0xe04e81331bdcbfbf2d1342714812d546a55cb6dc"
         this.transaction_in_proccess = false
-        this.chain = "0x1251"
-
+        this.abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}]
+        // this.chain = "0x1251"
+        this.chain = "0x89"
+        this.contract = undefined
     }
 
     async transfer(value, sender, arena) {
@@ -19,55 +22,43 @@ class Transaction {
         this.sender = sender;
         this.arena = arena;
         this.transaction_in_proccess = true;
-        const options = {
-            type: "erc20",
-            amount: Moralis.Units.Token(this.value, "18"),
-            receiver: this.receiver,
-            contractAddress: this.contract,
-            awaitReceipt: false
-        }
-        // Game.transaction.show_loader();
-        let result = await Moralis.transfer(options)
-        result.on("transactionHash", function (hash) {
-            Game.transaction.hash = hash;
-        });
-        result.on("receipt", function (receipt) {
-            Moralis.web3.eth.getTransaction(Game.transaction.hash).then(function (transaction) {
-                Game.transaction.receipt = transaction;
-                if (Game.transaction.check_data(Game.transaction.value)) {
-                    Game.start()
-                    // Game.transaction.hide_loader();
-                } else {
-                    // Game.transaction.hide_loader();
-                    Game.canvas.obejectInDOM.addEventListener('click', checkArena)
-                    console.log("error with transaction")
-                    throw 'error with transaction'
+        this.contract = new window.web3.eth.Contract(this.abi, this.contract_polygon)
+        let gasLimit = 60000;
+        let gasLimitHex = window.web3.utils.toHex(gasLimit);
+        let gasPrice = await window.web3.eth.getGasPrice();
+        this.contract.methods.transfer(this.receiver, window.web3.utils.toHex(window.web3.utils.toWei(value)))
+            .send({ from: sender, gasPrice: web3.utils.toHex(web3.utils.toBN(gasPrice * 10)), gasLimit: gasLimitHex})
+            .on('transactionHash', function(hash){
+                console.log(hash);
+                Game.transaction.hash = hash;
+            })
+            .on('receipt', function(receipt) {
+                    console.log(receipt)
+                    Game.transaction.receipt = receipt.events.Transfer.returnValues;
+                    if (Game.transaction.check_data(value)) {
+                        Game.start()
+                    }
+                    else{
+                        Game.canvas.obejectInDOM.addEventListener('click', checkArena)
+                        console.log("error with transaction")
+                        throw 'error with transaction'
+                    }
                 }
-            });
-        })
-            .on("error", (error) => {
-                // Game.transaction.hide_loader();
+                )
+            .on('error', function(error){
+                console.log(error)
                 Game.transaction.transaction_in_proccess = false
                 Game.canvas.obejectInDOM.addEventListener('click', checkArena)
-            });
+            })
     }
-
-    // show_loader() {
-    //     var loader = document.getElementById('loaderContainer');
-    //     loader.style = 'opacity: 9;';
-    // }
-    //
-    // hide_loader() {
-    //     var loader = document.getElementById('loaderContainer');
-    //     loader.style = 'opacity: 0;';
-    // }
 
 
     check_data(price) {
+        console.log(window.web3.utils.fromWei(this.receipt.value))
         return (
             this.receipt.from.toUpperCase() == this.sender.toUpperCase()
             && this.check_chain()
-            && (this.check_value(this.receipt.input) - price <= 1000))
+            && Math.abs(window.web3.utils.fromWei(this.receipt.value) - price) <= 100)
     }
 
     async check_chain() {
@@ -82,26 +73,4 @@ class Transaction {
             return false
         }
     }
-
-    check_value(val) {
-        for (var i = 0; i < val.length; i++) {
-            if (val.substring(i, i + 10) == "0000000000") {
-                for (var j = i; j < val.length; j++) {
-                    if (val[j] != "0") {
-                        for (var k = j; k < val.length; k++) {
-                            if (val.substring(k, k + 10) == "0000000000") {
-                                for (var l = k; k < val.length; l++) {
-                                    if (val[l] != "0" && val.substring(l - 20, l) == "00000000000000000000") {
-                                        let curr = parseInt(val.substring(l, val.length), 16);
-                                        return curr.toString().substring(0, curr.toString().length - 18)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 }

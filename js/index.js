@@ -46,17 +46,40 @@ async function add_iotex_chain(){
         .catch((error) => {
             console.log(error)
         })
+}
+
+async function add_polygon_chain(){
+    window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [{
+            chainId: '0x89',
+            chainName: 'Matic Mainnet',
+            nativeCurrency: {
+                name: 'Polygon',
+                symbol: 'MATIC',
+                decimals: 18
+            },
+            rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
+            blockExplorerUrls: ['https://polygonscan.com']
+        }]
+    })
+        .catch((error) => {
+            console.log(error)
+        })
 
 }
 
 async function login() {
     // Moralis.User.current()
-    add_iotex_chain()
+    // add_iotex_chain()
+    await add_polygon_chain()
+    window.web3 = new Web3(window.web3.currentProvider);
+    const chainId = await ethereum.request({ method: 'eth_chainId' });
     console.log("login clicked");
     if(!Game.user) {
         try{
             console.log("proccesing")
-            Game.user = await Moralis.Web3.authenticate({signingMessage: "Log in to ShibexRide", chainId: 4689});
+            Game.user = await Moralis.Web3.authenticate({signingMessage: "Log in to ShibexRide", chainId: chainId});
             console.log("worked");
         }
         catch(error){
