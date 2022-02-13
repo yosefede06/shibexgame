@@ -1,10 +1,10 @@
 // Obstacles images
-const imageSmallVerticalObstacle = './images/shibexObstacle1.png';
-const imageSmallHorizontalObstacle = './images/shibexObstacle2.png';
-const imageLargeVerticalObstacle = './images/shibexObstacle3.png';
-const imageLargeHorizontalObstacle = './images/shibexObstacle4.png';
-const imageDiagonalAscendingObstacle = './images/shibexObstacle5.png';
-const imageDiagonalDescendingObstacle = './images/shibexObstacle6.png';
+const imageSmallVerticalObstacle = './images/obstacle1-up.png';
+const imageSmallHorizontalObstacle = './images/obstacle2-.png';
+const imageLargeVerticalObstacle = './images/obstacle3-.png';
+const imageLargeHorizontalObstacle = './images/obstacle4-.png';
+const imageDiagonalAscendingObstacle = './images/obstacle5-.png';
+const imageDiagonalDescendingObstacle = './images/obstacle6-.png';
 
 // Obstacles index
 const smallVerticalObstacle = 0;

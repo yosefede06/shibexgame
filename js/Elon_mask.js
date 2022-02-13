@@ -1,9 +1,9 @@
 const walkerWidth =  90; //30
 const walkerHeight = 135; //45
 
-const walker1Image = './images/elonShibex.png';
-const walker2Image = './images/elonShibex.png';
-const walker3Image = './images/elonShibex.png';
+const walker1Image = './images/personajes-heroes6.png';
+const walker2Image = './images/personajes-heroes6.png';
+const walker3Image = './images/personajes-heroes6.png';
 
 const walkerSpeed = 2;
 

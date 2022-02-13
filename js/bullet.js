@@ -17,23 +17,22 @@ class Bullet {
         this.gameCtx = gameCtx
 
         this.position = {
-            x: playerPos.x + 16,
-            y: playerPos.y
+            x: playerPos.x -30,
+            y: playerPos.y -20
         }
 
-        this.speed = 20
-
+        this.speed = 8
         this.FPS = FPS
 
         this.image = {
 
             shoot: {
                 imageInstance: undefined,
-                imageSource: './images/bullet.png',
+                imageSource: './images/gunfire-ball.png',
 
                 size: {
-                    width: 10,
-                    height: 70
+                    width: 100,
+                    height: 100
                 }
             },
 
@@ -62,7 +61,7 @@ class Bullet {
         const offsetY = 10
 
         // We set a little offset for the bullets
-        this.position.x = this.position.x + ((Math.random() * (2 * offsetY) - offsetY))
+        this.position.x = this.position.x
 
         // Image for the shoot
         this.image.shoot.imageInstance = new Image()

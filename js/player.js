@@ -3,10 +3,10 @@ const playerSizeHeight = 100; //54
 
 const shootingForce = 0.8;
 
-const playerImage = './images/shibex_ride_2.png';
-const gunFireImage = './images/gunfire.png';
-const playerDeadImage = './images/playerdeadShibex2.png';
-const playerElectricImage = './images/electrocutedplayerShibex.png';
+const playerImage = './images/personajes.png';
+const gunFireImage = './images/chorro-pintura.png';
+const playerDeadImage = './images/dead-heroe1.png';
+const playerElectricImage = './images/electro.png';
 
 class JoyRoide {
     /**

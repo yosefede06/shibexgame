@@ -26,8 +26,8 @@ const Game = {
     // Canvas: size of the game window (and background)
     canvas: {
         size: {
-            width: (!window.mobileCheck()) ? (1080 * 1.17) : 700,
-            height: (!window.mobileCheck()) ? (600 * 1.17) : 600
+            width: 1080 * 1.17,
+            height: 600 * 1.17,
         },
         baseLine: baseLine,
         highLine: highLine,
@@ -1055,7 +1055,7 @@ const Game = {
         this.drawWalkersBack()
         this.drawCoins()
         this.drawBullets()
-        this.drawBulleShells()
+        // this.drawBulleShells()
         this.drawRockets()
         this.drawPlayer()
         this.drawWalkersFront()
@@ -1086,7 +1086,7 @@ const Game = {
         // draw each buttons
         for (let i = 0; i < this.arenas.length; i++){
             var elm = this.arenas[i].button
-            this.ctx.drawImage(elm.imageInstance, 0, 0, this.canvas.size.width, this.canvas.size.height)
+            this.ctx.drawImage(elm.imageInstance, 0, 90, this.canvas.size.width, (this.canvas.size.width) / 2.4084)
         }
 
         // draw price for each arena
@@ -1103,7 +1103,6 @@ const Game = {
             const price = elem.price_draw
             const priceDollar = `${elem.price_dollar} $`
             const priceToDraw = `${price} =`
-            this.ctx.font = 'italic bold 15px arial,serif'
             this.ctx.lineWidth = 1
 
             // getting the number of player in the Arena
@@ -1120,6 +1119,7 @@ const Game = {
             const txt_y = y + height  - 170
             const txt_x = x - 15
             const dollar_x =  82
+            this.ctx.font = 'italic bold 15px arial,serif'
             if (elem.name === "Lava"){
                 // this.ctx.fillRect(x - 100, y + height  - 345 + 50, 280, 40);
 
@@ -1306,8 +1306,8 @@ const Game = {
                 0,
                 Math.floor(this.player.image.gunFire.imageInstance.width / this.player.image.gunFire.frames),
                 this.player.image.gunFire.imageInstance.height,
-                this.player.gunFire.position.x,
-                this.player.gunFire.position.y,
+                this.player.gunFire.position.x + 15,
+                this.player.gunFire.position.y + 45,
                 (this.player.gunFire.size.width * 2) / this.player.image.gunFire.frames,
                 this.player.gunFire.size.height)
 
@@ -1318,7 +1318,7 @@ const Game = {
                 this.player.position.x,
                 this.player.position.y,
                 this.player.size.width / 2,
-                this.player.size.height
+                this.player.size.height / 2
 
             )
 
@@ -1329,8 +1329,8 @@ const Game = {
 
                 this.player.position.x,
                 this.player.position.y,
-                this.player.size.width / 1.8,
-                this.player.size.height / 1.8
+                this.player.size.width ,
+                this.player.size.height
             )
 
         }
@@ -1344,28 +1344,28 @@ const Game = {
 
         this.bullets.forEach(elm => {
 
-            this.ctx.drawImage(elm.image.shoot.imageInstance, elm.position.x, elm.position.y, elm.image.shoot.size.width, elm.image.shoot.size.height)
+            this.ctx.drawImage(elm.image.shoot.imageInstance, elm.position.x + 40, elm.position.y + 30, elm.image.shoot.size.width, elm.image.shoot.size.height)
 
         })
 
         // If there is some exploded bullet
 
-        this.explodedBullets.forEach(elm => {
-
-            this.ctx.drawImage(
-                elm.image.explosion.imageInstance,
-                elm.image.explosion.frameIndex * Math.floor(elm.image.explosion.imageInstance.width / elm.image.explosion.frames),
-                0,
-                elm.image.explosion.imageInstance.width / 2,
-                elm.image.explosion.imageInstance.height,
-
-
-                elm.position.x,
-                elm.position.y,
-                elm.image.explosion.size.width,
-                elm.image.explosion.size.height)
-
-        })
+        // this.explodedBullets.forEach(elm => {
+        //
+        //     this.ctx.drawImage(
+        //         elm.image.explosion.imageInstance,
+        //         elm.image.explosion.frameIndex * Math.floor(elm.image.explosion.imageInstance.width / elm.image.explosion.frames),
+        //         0,
+        //         elm.image.explosion.imageInstance.width / 2,
+        //         elm.image.explosion.imageInstance.height,
+        //
+        //
+        //         elm.position.x,
+        //         elm.position.y,
+        //         elm.image.explosion.size.width,
+        //         elm.image.explosion.size.height)
+        //
+        // })
     },
 
     drawBulleShells() {
@@ -1488,13 +1488,13 @@ const Game = {
         this.ctx.strokeText(scoreToDraw, 20, 110)
         if (this.player.isDead){
 
-            this.ctx.drawImage(this.board, 270, 310, 896 * 0.72, 403 * 0.35)
+            this.ctx.drawImage(this.board, 270, 110, 896 * 0.72, 403 * 0.35)
 
             const score = Math.floor(this.distanceDone) + 5 * this.collectedCoins
             const scoreToDraw = `YOUR FINAL SCORE IS: ${score}`
             this.ctx.font = 'italic bold 40px arial, serif'
-            this.ctx.fillText(scoreToDraw, 330, 400)
-            this.ctx.strokeText(scoreToDraw, 330, 400)
+            this.ctx.fillText(scoreToDraw, 330, 200)
+            this.ctx.strokeText(scoreToDraw, 330, 200)
         }
 
     },
@@ -1570,9 +1570,9 @@ const Game = {
                 Math.floor(elm.image.imageInstance.width / elm.image.frames),
                 Math.floor(elm.image.imageInstance.height / elm.image.rows),
                 elm.position.x,
-                elm.position.y,
-                elm.size.width,
-                elm.size.height
+                elm.position.y * 0.9,
+                elm.size.width * 1.6 ,
+                elm.size.height * 1.6
             )
 
         })
@@ -1602,9 +1602,9 @@ const Game = {
                 Math.floor(elm.image.imageInstance.width / elm.image.frames),
                 Math.floor(elm.image.imageInstance.height / elm.image.rows),
                 elm.position.x,
-                elm.position.y,
-                elm.size.width,
-                elm.size.height
+                elm.position.y * 0.9,
+                elm.size.width * 1.6,
+                elm.size.height * 1.6
             )
 
         })
