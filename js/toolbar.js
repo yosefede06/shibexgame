@@ -41,7 +41,7 @@ class Toolbar {
         this.gctx.ctx.drawImage(this.marcoInstance, 630, 100, this.width / 3 - 220, this.height / 1.5)
         this.gctx.ctx.drawImage(this.marcoInstance, 930, 100, this.width / 3 - 220, this.height / 1.5)
         if (!Game.user) {
-            this.gctx.ctx.drawImage(this.login_btn.imageInstance, 950, -75, 1.2*240, 1.3*164)
+            this.gctx.ctx.drawImage(this.login_btn.imageInstance, 1015, -50, 299 - 50, 134 + 20)
         }
         else {
             this.gctx.ctx.drawImage(this.login_empty_btn.imageInstance, 1015, -50, 299 - 50, 134 + 20)
