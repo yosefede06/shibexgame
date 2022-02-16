@@ -9,6 +9,10 @@ class Toolbar {
         this.layer = undefined
         this.marcoInstance = new Image()
         this.marcoInstance.src = "./images/vector.png"
+        this.iotex = new Image()
+        this.iotex.src = "./images/iotex.svg"
+        this.matic = new Image()
+        this.matic.src = "./images/polygon-matic.svg"
         //create all buttons
 
         this.ranking_btn = new Button(540, -120, 896 * 0.37, 403 * 0.46, this.gctx, './images/little2/ranking-button.png', undefined, ranking_btn_handler)
@@ -37,7 +41,7 @@ class Toolbar {
         this.gctx.ctx.drawImage(this.marcoInstance, 630, 100, this.width / 3 - 220, this.height / 1.5)
         this.gctx.ctx.drawImage(this.marcoInstance, 930, 100, this.width / 3 - 220, this.height / 1.5)
         if (!Game.user) {
-            this.gctx.ctx.drawImage(this.login_btn.imageInstance, 1015, -50, 299 - 50, 134 + 20)
+            this.gctx.ctx.drawImage(this.login_btn.imageInstance, 950, -75, 1.2*240, 1.3*164)
         }
         else {
             this.gctx.ctx.drawImage(this.login_empty_btn.imageInstance, 1015, -50, 299 - 50, 134 + 20)
@@ -50,11 +54,15 @@ class Toolbar {
             this.gctx.ctx.fillText(this.truncate, 1055, 50)
             this.gctx.ctx.strokeText(this.truncate, 305, 0)
         }
+
+        // this.gctx.ctx.drawImage(this.iotex, 970, 20, 20, 20)
+        // this.gctx.ctx.drawImage(this.matic, 970, 50, 20, 20)
     }
 
 }
 
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+
     if (w < 2 * r) r = w / 2;
     if (h < 2 * r) r = h / 2;
     this.beginPath();

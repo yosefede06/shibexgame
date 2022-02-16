@@ -289,7 +289,7 @@ const Game = {
         var button3 = new Button(740, 310, 100, 130, this,'images/desert_button.png', 'images/tmp_button.png')
         var button4 = new Button(1045, 310, 100, 130, this,'images/night_button.png', 'images/tmp_button.png')
         this.buttons_play = [button1, button2, button3, button4]
-        this.arenas.push(new Arena('Lava','10.000001', "10K", 3 , button1, 'images/bgVolcan.jpg', this))
+        this.arenas.push(new Arena('Lava','10000.000001', "10K", 3 , button1, 'images/bgVolcan.jpg', this))
         this.arenas.push(new Arena('Ice','20000.000001', "20K", 3, button2, 'images/ice.jpg', this))
         this.arenas.push(new Arena('Desert','50000.000001', "50K", 3, button3, 'images/new_desert.png', this))
         this.arenas.push(new Arena('Night','100000.000001',"100K", 3, button4, 'images/night.jpg', this))
@@ -1909,7 +1909,9 @@ function checkToolbarHover(event){
 
 
 async function save_data(hash){
+    console.log("hello")
     try{
+        let chain = await ethereum.request({ method: 'eth_chainId' })
         const eth_address = Game.user.get("ethAddress");
         const object = Moralis.Object.extend(Game.transaction.arena)
         Game.player_data = new object()
@@ -1917,6 +1919,7 @@ async function save_data(hash){
         Game.player_data.set("points", Game.distanceDone + (5 * Game.collectedCoins))
         Game.player_data.set("address", eth_address)
         Game.player_data.set("hash", hash)
+        Game.player_data.set("chain", chain)
         Game.transaction = new Transaction()
         await Game.player_data.save(null, {useMasterKey:true})
     }

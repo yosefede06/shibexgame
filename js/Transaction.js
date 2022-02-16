@@ -7,8 +7,9 @@ class Transaction {
         this.block = undefined;
         this.value = undefined;
         this.receiver = "0x6c0C7436A63F8E90Ba4aF3782ace272dDC162BEF";
+        this.contract = undefined;
         this.sender = undefined;
-        this.contract = "0x838403e073a79719a0927a16642ca7dcdc642bd5"
+        this.contract_iotex = "0x838403e073a79719a0927a16642ca7dcdc642bd5"
         this.contract_polygon = "0xe04e81331bdcbfbf2d1342714812d546a55cb6dc"
         this.transaction_in_proccess = false
         this.abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}]
@@ -18,16 +19,22 @@ class Transaction {
     }
 
     async transfer(value, sender, arena) {
+        this.chain = await ethereum.request({ method: 'eth_chainId' })
         this.value = value;
         this.sender = sender;
         this.arena = arena;
         this.transaction_in_proccess = true;
-        this.contract = new window.web3.eth.Contract(this.abi, this.contract_polygon)
-        let gasLimit = 60000;
+        if(this.chain == "0x89"){
+            this.contract = new window.web3.eth.Contract(this.abi, this.contract_polygon)
+        }
+        if(this.chain == "0x1251"){
+            this.contract = new window.web3.eth.Contract(this.abi, this.contract_iotex)
+        }
+        let gasLimit = 40000;
         let gasLimitHex = window.web3.utils.toHex(gasLimit);
         let gasPrice = await window.web3.eth.getGasPrice();
         this.contract.methods.transfer(this.receiver, window.web3.utils.toHex(window.web3.utils.toWei(value)))
-            .send({ from: sender, gasPrice: web3.utils.toHex(web3.utils.toBN(gasPrice * 10)), gasLimit: gasLimitHex})
+            .send({ from: sender, gasPrice: web3.utils.toHex(web3.utils.toBN(gasPrice * 2)), gasLimit: gasLimitHex})
             .on('transactionHash', function(hash){
                 console.log(hash);
                 Game.transaction.hash = hash;
@@ -57,7 +64,7 @@ class Transaction {
         console.log(window.web3.utils.fromWei(this.receipt.value))
         return (
             this.receipt.from.toUpperCase() == this.sender.toUpperCase()
-            && this.check_chain()
+            // && this.check_chain()
             && Math.abs(window.web3.utils.fromWei(this.receipt.value) - price) <= 100)
     }
 
