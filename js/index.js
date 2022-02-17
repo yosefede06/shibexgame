@@ -66,31 +66,51 @@ async function add_polygon_chain(){
         .catch((error) => {
             console.log(error)
         })
-
 }
-
-async function login() {
-    // Moralis.User.current()
-    // add_iotex_chain()
-    // await add_polygon_chain()
-    window.web3 = new Web3(window.web3.currentProvider);
-    const chainId = await ethereum.request({ method: 'eth_chainId' });
-    console.log("login clicked");
-    if(!Game.user) {
-        try{
-            console.log("proccesing")
-            Game.user = await Moralis.Web3.authenticate({signingMessage: "Log in to ShibexRide", chainId: chainId});
-            console.log("worked");
-        }
-        catch(error){
-            console.log("error");
+async function check_user(){
+    const current = await Moralis.User.current()
+    if(current){
+        if(ethereum.selectedAddress == current.attributes.accounts[0]){
+            if(!Game.user){
+                Game.user = current;
+            }
+            window.web3 = new Web3(window.web3.currentProvider);
+            return true;
         }
     }
-    if (Game.user) {
-        console.log(Game.user);
-        Game.user.save();
-        if (!Game.isPlaying) {
-            Game.arenaMenu()
+    return false
+}
+async function login() {
+    const provider = await detectEthereumProvider()
+    if (provider) {
+        const bol = await check_user()
+        if(bol){
+            console.log(Game.user);
+            if (!Game.isPlaying) {
+                Game.arenaMenu()
+            }
         }
+        else {
+            const chainId = await ethereum.request({ method: 'eth_chainId' });
+            console.log("login clicked");
+                try{
+                    console.log("proccesing")
+                    Game.user = await Moralis.Web3.authenticate({signingMessage: "Log in to ShibexRide", chainId: chainId});
+                    console.log("worked");
+                }
+                catch(error){
+                    console.log("error");
+                }
+            if (Game.user) {
+                console.log(Game.user);
+                Game.user.save();
+                if (!Game.isPlaying) {
+                    Game.arenaMenu()
+                    }
+                }
+            }
+        }
+    else{
+        console.log("Install Metamask!")
     }
 }

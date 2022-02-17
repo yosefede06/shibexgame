@@ -9,10 +9,12 @@ class Toolbar {
         this.layer = undefined
         this.marcoInstance = new Image()
         this.marcoInstance.src = "./images/vector.png"
-        this.iotex = new Image()
-        this.iotex.src = "./images/iotex.svg"
-        this.matic = new Image()
-        this.matic.src = "./images/polygon-matic.svg"
+        this.shibexPolygon = "0xe04e81331bdcbfbf2d1342714812d546a55cb6dc";
+        this.shibexIotex = "0x838403e073a79719a0927a16642ca7dcdc642bd5"
+        this.Abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}];
+        this.logo = new Image()
+        this.logo.src = "./images/shibex-logo1.png"
+
         //create all buttons
 
         this.ranking_btn = new Button(540, -120, 896 * 0.37, 403 * 0.46, this.gctx, './images/little2/ranking-button.png', undefined, ranking_btn_handler)
@@ -21,7 +23,8 @@ class Toolbar {
         this.login_btn = new Button(1055, -50, 250, 104, this.gctx, './images/little4/connect.png', undefined, login)
         this.login_empty_btn = new Button(1055, -50, 250, 104, this.gctx, './images/login_empty_1.png', undefined, undefined)
         this.play_btn = new Button(290, 480, this.width / 2 - 200, this.height / 2, this.gctx, './images/play-new.png', undefined, demo_btn_handler)
-
+        this.iotex = new Button(945, 25, 30, 30, this.gctx,"./images/iotex.svg", undefined, add_iotex_chain)
+        this.matic = new Button(985, 25, 31, 31, this.gctx, "./images/polygon.svg", undefined, add_polygon_chain)
         //push it into the list
 
         this.buttons.push(this.ranking_btn)
@@ -29,6 +32,8 @@ class Toolbar {
         this.buttons.push(this.update_btn)
         this.buttons.push(this.login_btn)
         this.buttons.push(this.play_btn)
+        this.buttons.push(this.iotex)
+        this.buttons.push(this.matic)
     }
 
     async draw() {
@@ -40,7 +45,12 @@ class Toolbar {
         this.gctx.ctx.drawImage(this.marcoInstance, 330, 100, this.width / 3 - 220, this.height / 1.5)
         this.gctx.ctx.drawImage(this.marcoInstance, 630, 100, this.width / 3 - 220, this.height / 1.5)
         this.gctx.ctx.drawImage(this.marcoInstance, 930, 100, this.width / 3 - 220, this.height / 1.5)
-        if (!Game.user) {
+        this.gctx.ctx.drawImage(this.login_empty_btn.imageInstance, 925, -50, 299 - 50, 134 + 20)
+        this.gctx.ctx.drawImage(this.iotex.imageInstance, 945, 25, 30, 30)
+        this.gctx.ctx.drawImage(this.matic.imageInstance, 985, 25, 31, 31)
+        const check = await check_user()
+        console.log(check)
+        if (!check) {
             this.gctx.ctx.drawImage(this.login_btn.imageInstance, 1015, -50, 299 - 50, 134 + 20)
         }
         else {
@@ -48,11 +58,35 @@ class Toolbar {
             const address = await Game.user.get("ethAddress")
             this.truncate = address.substring(0, 5) + "..." + address.substring(38, 42)
             console.log(this.truncate)
-            this.gctx.ctx.font = 'italic bold 27px arial,serif';
+            this.gctx.ctx.font = 'italic bold 26px arial,serif';
             this.gctx.ctx.fillStyle = "rgb(255,255,255)";
             this.gctx.ctx.strokeStyle = this.gctx.ctx.fillStyle;
-            this.gctx.ctx.fillText(this.truncate, 1055, 50)
-            this.gctx.ctx.strokeText(this.truncate, 305, 0)
+            // this.gctx.ctx.fillText(this.truncate, 1030, 50)
+            // this.gctx.ctx.strokeText(this.truncate, 305, 0)
+
+            const chain = await ethereum.request({ method: 'eth_chainId' })
+
+            if(chain == "0x89"){
+                if(window.web3){
+                    this.gctx.ctx.font = 'italic bold 24px arial,serif';
+                    const contract = new window.web3.eth.Contract(this.Abi, this.shibexPolygon)
+                    let temp = await contract.methods.balanceOf(address).call()
+                    const balance = (temp * 10**(-18)).toLocaleString('en-US');
+                    this.gctx.ctx.fillText(balance.substring(0, 12), 1050, 50)
+                    this.gctx.ctx.drawImage(this.logo, 1200, 25, 31, 31)
+                }
+
+            }
+            if(chain == "0x1251"){
+                if(window.web3){
+                    this.gctx.ctx.font = 'italic bold 24px arial,serif';
+                    const contract = new window.web3.eth.Contract(this.Abi, this.shibexIotex)
+                    let temp = await contract.methods.balanceOf(address).call()
+                    const balance = (temp * 10**(-18)).toLocaleString('en-US');
+                    this.gctx.ctx.fillText(balance.substring(0, 12), 1050, 50)
+                    this.gctx.ctx.drawImage(this.logo, 1200, 25, 31, 31)
+                }
+            }
         }
 
         // this.gctx.ctx.drawImage(this.iotex, 970, 20, 20, 20)
@@ -91,6 +125,7 @@ Toolbar.prototype.ontouchstart= function(mousex, mousey){
         }
     })
 }
+
 
 
 //
