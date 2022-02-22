@@ -140,6 +140,8 @@ const Game = {
     final_score: 0,
     audio: {
         tracks: {
+            arena: new Audio('./audio/arena.mp3'),
+            game: new Audio('./audio/game.mp3'),
             breakWallSong: new Audio('./audio/break-wall.mp3'),
             runFloorSong: new Audio('./audio/runfloor.mp3'),
             shotsSong: new Audio('./audio/shooting.mp3'),
@@ -271,6 +273,9 @@ const Game = {
     },
     arenaMenu()
     {
+        this.audio.tracks.game.pause()
+        this.audio.tracks.runFloorSong.volume = .1
+        this.audio.tracks.arena.play()
         this.inArenaMenu = true
         this.canvas.obejectInDOM.removeEventListener('click', this.arenaMenu)
         // this.ctx.drawImage(this.background.menu.imageInstance, 0,  0, this.canvas.size.width, this.canvas.size.height)
@@ -289,7 +294,7 @@ const Game = {
         var button3 = new Button(740, 310, 100, 130, this,'images/desert_button.png', 'images/tmp_button.png')
         var button4 = new Button(1045, 310, 100, 130, this,'images/night_button.png', 'images/tmp_button.png')
         this.buttons_play = [button1, button2, button3, button4]
-        this.arenas.push(new Arena('Lava','10.000001', "10K", 3 , button1, 'images/bgVolcan.jpg', this))
+        this.arenas.push(new Arena('Lava','10000.000001', "10K", 3 , button1, 'images/bgVolcan.jpg', this))
         this.arenas.push(new Arena('Ice','20000.000001', "20K", 3, button2, 'images/ice.jpg', this))
         this.arenas.push(new Arena('Desert','50000.000001', "50K", 3, button3, 'images/new_desert.png', this))
         this.arenas.push(new Arena('Night','100000.000001',"100K", 3, button4, 'images/night.jpg', this))
@@ -1487,7 +1492,6 @@ const Game = {
         this.ctx.fillText(scoreToDraw, 20, 110)
         this.ctx.strokeText(scoreToDraw, 20, 110)
         if (this.player.isDead){
-
             this.ctx.drawImage(this.board, 270, 310, 896 * 0.72, 403 * 0.35)
 
             const score = Math.floor(this.distanceDone) + 5 * this.collectedCoins
@@ -1639,7 +1643,6 @@ const Game = {
 
         this.player.isShooting = false
         this.player.forces.totalForce = 0 - this.player.forces.gravityForce
-
         this.audio.track.shotsSong.pause()
 
     },
@@ -1729,12 +1732,14 @@ const Game = {
 
         })
         this.audio.tracks.runFloorSong.volume = .1
+        this.audio.tracks.game.volume = .08
         this.audio.tracks.coinsSong.volume = .1
         this.audio.tracks.warningSong.volume = .1
         this.audio.tracks.truck.volume = .1
 
         this.audio.tracks.breakWallSong.play()
-
+        this.audio.tracks.arena.pause()
+        this.audio.tracks.game.play()
         setTimeout(() => {
 
         }, 1000)

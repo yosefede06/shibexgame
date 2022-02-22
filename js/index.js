@@ -95,6 +95,12 @@ async function login() {
             console.log("login clicked");
                 try{
                     console.log("proccesing")
+                    // Game.user = await Moralis.authenticate({
+                    //     provider: "magicLink",
+                    //     email: "yosefedery@hotmail.es",
+                    //     apiKey: "pk_live_F9EE03C2135F4DDB",
+                    //     network: "ropsten",
+                    // })
                     Game.user = await Moralis.Web3.authenticate({signingMessage: "Log in to ShibexRide", chainId: chainId});
                     console.log("worked");
                 }
