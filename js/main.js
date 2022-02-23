@@ -162,7 +162,7 @@ const Game = {
     //----- INITIALIZE METHODS -----
 
     init() {
-        this.transaction = new Transaction()
+        this.transaction = new Transaction(this)
         this.setCanvasDimensions()
         this.ctx = this.canvas.obejectInDOM.getContext('2d')
 
@@ -1925,7 +1925,7 @@ async function save_data(hash){
         Game.player_data.set("address", eth_address)
         Game.player_data.set("hash", hash)
         Game.player_data.set("chain", chain)
-        Game.transaction = new Transaction()
+        Game.transaction = new Transaction(this)
         await Game.player_data.save(null, {useMasterKey:true})
     }
     catch(e){

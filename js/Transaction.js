@@ -1,5 +1,6 @@
 class Transaction {
-    constructor() {
+    constructor(gctx) {
+        this.gctx = gctx;
         this.arena = undefined
         this.user = undefined
         this.receipt = undefined
@@ -16,6 +17,8 @@ class Transaction {
         // this.chain = "0x1251"
         this.chain = "0x89"
         this.contract = undefined
+        this.loading = new Image()
+        this.loading.src = "./images/loading-game.png"
     }
 
     async transfer(value, sender, arena) {
@@ -36,6 +39,7 @@ class Transaction {
         this.contract.methods.transfer(this.receiver, window.web3.utils.toHex(window.web3.utils.toWei(value)))
             .send({ from: sender, gasPrice: web3.utils.toHex(web3.utils.toBN(gasPrice * 2)), gasLimit: gasLimitHex})
             .on('transactionHash', function(hash){
+                Game.transaction.loading_func()
                 console.log(hash);
                 Game.transaction.hash = hash;
             })
@@ -59,7 +63,12 @@ class Transaction {
             })
     }
 
-
+    loading_func(){
+        this.gctx.ctx.fillStyle = '#53d2fc'
+        this.gctx.ctx.rect(0,-400,1500,1800)
+        this.gctx.ctx.fill();
+        this.gctx.ctx.drawImage(this.loading, 230,-100,800,800)
+    }
     check_data(price) {
         console.log(window.web3.utils.fromWei(this.receipt.value))
         return (
