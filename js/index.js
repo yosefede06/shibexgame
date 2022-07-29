@@ -2,6 +2,9 @@ const serverUrl = "https://ookx1ekvhhyl.usemoralis.com:2053/server";
 const appId = "xj3nAAs6JP1VixxWcF57oFyEcDdj4DwFSBfU9KJl";
 Moralis.start({ serverUrl, appId });
 window.onload = function () {
+    if(window.location.search){
+        volume_request = window.location.search.includes("mute") ? 0 : 1
+    }
     // document.getElementById("start-button").onclick = function () {
     //
     //     document.getElementById("start-button").disabled = true
