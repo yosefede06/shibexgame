@@ -1753,15 +1753,12 @@ const Game = {
     },
 
     playRunAudio() {
-
-        this.audio.tracks.runFloorSong.play()
+        volume_request ? this.audio.tracks.runFloorSong.play() : undefined;
 
     },
 
     stopRunAudio() {
-
-        this.audio.tracks.runFloorSong.pause()
-
+        volume_request ? this.audio.tracks.runFloorSong.pause() : undefined;
     },
 
 
@@ -1769,24 +1766,23 @@ const Game = {
     //----- EVENT HANDLERS -----
 
     setEventHandlers() {
-        window.ontouchstart = (e) => {
+        window.addEventListener('touchstart', ()=>{
             if (!this.player.isDead && this.isPlaying) {
                 // e.preventDefault()
                 this.player.isShooting = true
                 this.player.forces.totalForce = this.player.forces.shootingForce - this.gravityForce
 
                 // We play the shot audio
-                this.audio.tracks.shotsSong.play()
+                volume_request ? this.audio.tracks.shotsSong.play(): undefined;
+
 
             }
-
-
-        }
+        });
         window.ontouchend = (e) => {
             this.player.isShooting = false
             this.player.forces.totalForce = 0 - this.player.forces.gravityForce
+            volume_request ? this.audio.tracks.shotsSong.pause(): undefined;
 
-            this.audio.tracks.shotsSong.pause()
 
             this.player.fireTime = 0
 
@@ -1801,8 +1797,7 @@ const Game = {
                 this.player.forces.totalForce = this.player.forces.shootingForce - this.gravityForce
 
                 // We play the shot audio
-                this.audio.tracks.shotsSong.play()
-
+                volume_request ? this.audio.tracks.shotsSong.play(): undefined;
             }
 
         }
@@ -1817,7 +1812,8 @@ const Game = {
                     this.player.forces.totalForce = this.player.forces.shootingForce - this.gravityForce
 
                     // We play the shot audio
-                    this.audio.tracks.shotsSong.play()
+                    volume_request ? this.audio.tracks.shotsSong.play(): undefined;
+
 
                 }
 
@@ -1828,8 +1824,9 @@ const Game = {
 
             this.player.isShooting = false
             this.player.forces.totalForce = 0 - this.player.forces.gravityForce
+            volume_request ? this.audio.tracks.shotsSong.pause(): undefined;
 
-            this.audio.tracks.shotsSong.pause()
+
 
             this.player.fireTime = 0
 
@@ -1841,8 +1838,9 @@ const Game = {
 
                 this.player.isShooting = false
                 this.player.forces.totalForce = 0 - this.player.forces.gravityForce
+                volume_request ? this.audio.tracks.shotsSong.pause(): undefined;
 
-                this.audio.tracks.shotsSong.pause()
+
 
             }
 

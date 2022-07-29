@@ -1,5 +1,6 @@
 // Images of Background
-const imageBackGround = './images/bgVolcan.jpg';
+const all_backgrounds = ['./images/bgVolcan.jpg', './images/night.jpg', "./images/ice.jpg", "./images/desierto.jpg"]
+const imageBackGround = all_backgrounds[Math.floor(Math.random()*all_backgrounds.length)];
 const imageInitialBackGround = './images/initialBackgroundShibex.png';
 const imageGameOver = './images/gameoverShibex.png';
 const imageClosureIronUpYellow = './images/shibexUp.png';
