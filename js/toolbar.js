@@ -32,10 +32,10 @@ class Toolbar {
         this.gctx.ctx.drawImage(this.full_screen_btn.imageInstance, 290, -10)
         this.gctx.ctx.drawImage(this.update_btn.imageInstance, 290, -50)
         this.gctx.ctx.drawImage(this.play_btn.imageInstance, 290, 480, this.width / 2 - 100, this.height / 2)
-        this.gctx.ctx.drawImage(this.marcoInstance, 0, 100, this.width / 3 - 220, this.height / 1.5)
-        this.gctx.ctx.drawImage(this.marcoInstance, 330, 100, this.width / 3 - 220, this.height / 1.5)
-        this.gctx.ctx.drawImage(this.marcoInstance, 630, 100, this.width / 3 - 220, this.height / 1.5)
-        this.gctx.ctx.drawImage(this.marcoInstance, 930, 100, this.width / 3 - 220, this.height / 1.5)
+        // this.gctx.ctx.drawImage(this.marcoInstance, 0, 100, this.width / 3 - 220, this.height / 1.5)
+        // this.gctx.ctx.drawImage(this.marcoInstance, 330, 100, this.width / 3 - 220, this.height / 1.5)
+        // this.gctx.ctx.drawImage(this.marcoInstance, 630, 100, this.width / 3 - 220, this.height / 1.5)
+        // this.gctx.ctx.drawImage(this.marcoInstance, 930, 100, this.width / 3 - 220, this.height / 1.5)
         if (!Game.user) {
             this.gctx.ctx.drawImage(this.login_btn.imageInstance, 1015, -50, 299 - 50, 134 + 20)
         }
